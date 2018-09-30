@@ -2,8 +2,10 @@
 
 require_once './config/Database.php';
 require_once './config/Routes.php';
+
 require_once './controllers/Autoloader.php';
 require_once './models/Autoloader.php';
+
 require_once './router/Router.php';
 
 define("ROOT", __DIR__);
