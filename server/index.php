@@ -43,6 +43,5 @@ $router
         echo "404.NotFound";
     });
 
-
 if (isset($_GET["url"])) $router->entry($_GET["url"]);
 else $router->entry("");

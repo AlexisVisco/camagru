@@ -23,8 +23,9 @@ class FlashMessage
     }
 
     public static function consume() : FlashMessage {
-        $flash = $_SESSION["flash_message"] ;
+        $flash = json_decode($_SESSION["flash_message"]) ;
         if ($flash == NULL) return NULL;
+
 
         $flashObject = new FlashMessage("", NULL);
         foreach ($flash as $key => $value) $flashObject->{$key} = $value;
@@ -35,6 +36,10 @@ class FlashMessage
 
     public static function hasFlash() {
         return $_SESSION["flash_message"] != NULL;
+    }
+
+    public static function html() {
+        include ROOT . "/views/util/notifications.php";
     }
 }
 

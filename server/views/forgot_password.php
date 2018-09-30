@@ -1,9 +1,10 @@
 <div class="container has-text-centered">
-    <div class="column is-4 is-offset-4">
+    <div class="column is-5 is-offset-4">
         <h3 class="title has-text-grey">Mot de passe oublié</h3>
         <p class="subtitle has-text-grey">Oups, vous avez un trou de mémoire?</p>
         <div class="box">
             <form>
+                <?php FlashMessage::html() ?>
                 <div class="field">
                     <p class="control">
                         <input class="input" type="email" placeholder="Email de votre compte">
