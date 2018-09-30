@@ -1,5 +1,6 @@
 <?php
 
+require_once './config/Database.php';
 require_once './controllers/Autoloader.php';
 require_once './models/Autoloader.php';
 require_once './router/Router.php';
@@ -15,16 +16,17 @@ Camagru\Models\Autoloader::register();
 $router = Router::getInstance();
 
 $router
-    ->addRoute("hey/george/(\d+)/(\d+)/", "UserController@georgeBefore", RouteOrder::$BEFORE)
-    ->addRoute("hey/george/(\d+)/(\d+)/", "UserController@george", RouteOrder::$ROUTE)
-    ->addRoute("hey/george/", "UserController@home", RouteOrder::$ROUTE)
+    ->addRoute("", "Home@index", RouteOrder::$ROUTE)
     ->else(function () {
-        header('Content-Type: application/json');
-        echo json_encode(Errors::NotFound());
+        echo "404.NotFound";
     });
 
-if (isset($_GET["url"])) {
-    $router->entry($_GET["url"]);
-} else {
-    echo json_encode(new Status());
-}
+if (isset($_GET["url"])) $router->entry($_GET["url"]);
+else $router->entry("");
+
+
+$user = new User();
+$user = $user->load("fijewnfiwefw");
+/* @var User $user  */
+$user->init("kwixxy", "lolcc@outlook.fr", "ewdeewdewdew");
+$user->save();

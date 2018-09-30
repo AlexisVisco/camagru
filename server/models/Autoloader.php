@@ -9,6 +9,8 @@ class Autoloader {
      */
     static function register(){
 
+        require_once 'util/Storage.php';
+
         spl_autoload_register(array(__CLASS__, 'autoload'));
     }
 
