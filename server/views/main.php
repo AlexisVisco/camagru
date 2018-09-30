@@ -29,7 +29,7 @@
         <nav class="navbar">
             <div class="container">
                 <div class="navbar-brand">
-                    <h1>Camagru</h1>
+                    <h1 style="padding-top: 10px" class="title is-3">Camagru</h1>
 
                     <span class="navbar-burger burger" data-target="navbarMenu">
                         <span></span>
@@ -41,10 +41,10 @@
                     <div class="navbar-end">
                         <div class="tabs is-right">
                             <ul>
-                                <li class="is-active"><a>Accueil</a></li>
-                                <li><a href="">Gallerie</a></li>
-                                <a style="margin-left: 10px" class="button">S'inscrire</a>
-                                <a style="margin-left: 5px" class="button is-primary">Se connecter</a>
+                                <li><a href="/">Accueil</a></li>
+                                <li><a href="/">Gallerie</a></li>
+                                <a href="/<?php echo Routes::$USER_REGISTER?>" style="margin-left: 10px" class="button">S'inscrire</a>
+                                <a href="/<?php echo Routes::$USER_LOGIN?>" style="margin-left: 5px" class="button is-primary">Se connecter</a>
 
                             </ul>
                         </div>

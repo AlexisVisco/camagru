@@ -3,23 +3,19 @@
 
 class UserController extends BaseController
 {
-    public function home()
+
+    public function register()
     {
-        echo "Im at home";
+        echo self::render("register");
     }
 
-    public function george($lel, $ok)
+    public function forgotPwd()
     {
-        echo "george after";
-
+        echo self::render("forgot_password");
     }
 
-    public function georgeBefore($lel, $ok)
+    public function login()
     {
-        echo self::render("home", [
-                "lel" => $lel,
-                "ok" => $ok]
-        );
-        return false;
+        echo self::render("login");
     }
 }
