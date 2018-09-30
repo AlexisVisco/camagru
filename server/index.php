@@ -18,27 +18,18 @@ $router = Router::getInstance();
 
 $router
 
-    //----------------------------------------->
-    //
     // HOME ROUTE
     //
-    //----------------------------------------->
     ->addRoute("",                          "HomeController@index",         RouteOrder::$ROUTE)
 
-    //----------------------------------------->
-    //
     // USER ROUTES
     //
-    //----------------------------------------->
     ->addRoute(Routes::$USER_REGISTER,      "UserController@register",      RouteOrder::$ROUTE)
     ->addRoute(Routes::$USER_LOGIN,         "UserController@login",         RouteOrder::$ROUTE)
     ->addRoute(Routes::$USER_FORGOT_PWD,    "UserController@forgotPwd",     RouteOrder::$ROUTE)
 
-    //----------------------------------------->
-    //
     // 404 NOT FOUND
     //
-    //----------------------------------------->
     ->else(function () {
         echo "404.NotFound";
     });
