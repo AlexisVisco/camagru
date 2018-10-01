@@ -4,30 +4,30 @@
         <p class="subtitle has-text-grey">Vous voulez vous inscrire ? C'est ici !</p>
         <div class="box">
             <?php FlashMessage::html() ?>
-            <form>
+            <form method="post" action="/<?php echo Routes::$USER_REGISTER ?>">
                 <div class="field">
                     <p class="control">
-                        <input class="input" type="email" placeholder="Email">
+                        <input name="email" class="input" type="email" placeholder="Email">
                     </p>
                 </div>
 
                 <div class="field">
                     <div class="control">
-                        <input class="input" type="text" placeholder="Nom d'utilisateur" autofocus="">
+                        <input name="username" class="input" type="text" placeholder="Nom d'utilisateur" autofocus="">
                     </div>
                 </div>
 
                 <div class="field">
                     <div class="control">
-                        <input class="input" type="password" placeholder="Mot de passe">
+                        <input  name="password" class="input" type="password" placeholder="Mot de passe">
                     </div>
                 </div>
                 <div class="field">
                     <div class="control">
-                        <input class="input" type="password" placeholder="Confirmation mot de passe">
+                        <input name="passwordConfirm" class="input" type="password" placeholder="Confirmation mot de passe">
                     </div>
                 </div>
-                <button class="button is-block is-info is-fullwidth">S'inscrire</button>
+                <button type="submit" class="button is-block is-info is-fullwidth">S'inscrire</button>
             </form>
         </div>
         <p class="has-text-grey">

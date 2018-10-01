@@ -3,14 +3,14 @@
         <h3 class="title has-text-grey">Mot de passe oublié</h3>
         <p class="subtitle has-text-grey">Oups, vous avez un trou de mémoire?</p>
         <div class="box">
-            <form>
+            <form method="post" action="/<?php echo Routes::$USER_FORGOT_PWD ?>">
                 <?php FlashMessage::html() ?>
                 <div class="field">
                     <p class="control">
-                        <input class="input" type="email" placeholder="Email de votre compte">
+                        <input name="email" class="input" type="email" placeholder="Email de votre compte">
                     </p>
                 </div>
-                <button class="button is-block is-info is-fullwidth">Récupérer</button>
+                <button type="submit" class="button is-block is-info is-fullwidth">Récupérer</button>
             </form>
         </div>
         <p class="has-text-grey">

@@ -4,18 +4,18 @@
         <p class="subtitle has-text-grey">Vous avez un compte? C'est ici !</p>
         <div class="box">
             <?php FlashMessage::html() ?>
-            <form>
+            <form method="post" action="/<?php echo Routes::$USER_LOGIN ?>">
                 <div class="field">
                     <p class="control">
-                        <input class="input" type="email" placeholder="Email">
+                        <input name="email" class="input" type="email" placeholder="Email">
                     </p>
                 </div>
                 <div class="field">
                     <div class="control">
-                        <input class="input" type="password" placeholder="Mot de passe">
+                        <input name="password" class="input" type="password" placeholder="Mot de passe">
                     </div>
                 </div>
-                <button class="button is-block is-info is-fullwidth">S'inscrire</button>
+                <button type="submit" class="button is-block is-info is-fullwidth">Se conencter</button>
             </form>
         </div>
         <p class="has-text-grey">

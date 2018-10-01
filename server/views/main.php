@@ -1,6 +1,9 @@
+<?php
+$user = User::getUser();
+?>
+
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -43,10 +46,18 @@
                             <ul>
                                 <li><a href="/">Accueil</a></li>
                                 <li><a href="/">Gallerie</a></li>
-                                <a href="/<?php echo Routes::$USER_REGISTER?>" style="margin-left: 10px" class="button">S'inscrire</a>
-                                <a href="/<?php echo Routes::$USER_LOGIN?>" style="margin-left: 5px" class="button is-primary">Se connecter</a>
 
+                                <?php if ($user == NULL) { ?>
+                                <a href="/<?php echo Routes::$USER_REGISTER ?>" style="margin-left: 10px"
+                                   class="button">S'inscrire</a>
+                                <a href="/<?php echo Routes::$USER_LOGIN ?>" style="margin-left: 5px"
+                                   class="button is-primary">Se connecter</a>
                             </ul>
+                            <?php } else { ?>
+                                <li><a href="/">Paramètres</a></li>
+                                <li><a href="/">Mon Profil</a></li>
+                                <li><a href="/<?php echo Routes::$USER_LOGOUT ?>">Se deconnecter</a></li>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>

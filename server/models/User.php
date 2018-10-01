@@ -9,8 +9,8 @@ class User extends Storage
     public $username;
     public $email;
     public $password;
-    public $confirmed = false;
-    public $notified = true;
+    public $confirmed = 0;
+    public $notified = 1;
     public $token;
 
 
@@ -27,9 +27,24 @@ class User extends Storage
         $this->password = $password;
     }
 
+    public function login() {
+        $_SESSION["user"] = json_encode($this);
+    }
+
+    public static function logout() {
+        $_SESSION["user"] = NULL;
+    }
+
+    public static function getUser() {
+        $u = new User();
+        if (!isset($_SESSION["user"]) || $_SESSION["user"] == NULL) return NULL;
+        $uDecoded = json_decode($_SESSION["user"]);
+        foreach ($uDecoded as $key => $value) $u->{$key} = $value;
+        return $u;
+    }
+
     public function save()
     {
-        var_dump(array_slice(array_values((array) $this), 0, 7));
         return $this->database->q(
             /** @lang MySQL */
             "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)",
