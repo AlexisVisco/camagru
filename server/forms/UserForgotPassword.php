@@ -1,13 +1,11 @@
 <?php
 
-class UserLogin implements FormValidation
+class UserForgotPassword implements FormValidation
 {
-
     public $email;
-    public $password;
 
     /**
-     * UserRegister constructor.
+     * UserForgotPassword constructor.
      * @param $array
      */
     public function __construct($array)
@@ -20,14 +18,9 @@ class UserLogin implements FormValidation
     function validate(): bool
     {
         $user = new User();
-        if (!$user->exist("email", $this->email)) {
-            Messages::loginFail();
-            return false;
-        }
         $user = $user->loadWhere("email", $this->email);
-        if (!password_verify(SALT . $this->password, $user->password)
-        || $user->confirmed == 0) {
-            Messages::loginFail();
+        if ($user == NULL) {
+            Messages::emailShouldExist();
             return false;
         }
         return true;

@@ -31,23 +31,18 @@ $router
 
     // USER ROUTES
     //
+    ->addRoute(Routes::$USER_CONFIRM,       "UserController@confirm",       RouteOrder::$ROUTE)
     ->addRoute(Routes::$USER_REGISTER,      "UserController@register",      RouteOrder::$ROUTE)
     ->addRoute(Routes::$USER_LOGIN,         "UserController@login",         RouteOrder::$ROUTE)
     ->addRoute(Routes::$USER_LOGOUT,        "UserController@logout",        RouteOrder::$ROUTE)
     ->addRoute(Routes::$USER_FORGOT_PWD,    "UserController@forgotPwd",     RouteOrder::$ROUTE)
+    ->addRoute(Routes::$USER_CHANGE_PWD,    "UserController@changePwd",     RouteOrder::$ROUTE)
 
     // 404 NOT FOUND
     //
     ->else(function () {
         echo "404.NotFound";
     });
-
-$to = "alexis.viscogliosi@outlook.fr";
-$subject = "My subject";
-$txt = "Hello world!";
-$headers = "From: mail@camagru.net";
-
-var_dump(mail($to,$subject,$txt,$headers));
 
 if (isset($_GET["url"])) $router->entry($_GET["url"]);
 else $router->entry("");

@@ -1,6 +1,6 @@
 <?php
 
-class Errors
+class Messages
 {
     public static function shouldEnsure($array) {
         $fm = new FlashMessage("", FlashType::$ERROR);

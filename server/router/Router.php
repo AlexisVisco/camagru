@@ -79,11 +79,8 @@ class Router
         $routeMatch = false;
 
         $this->iterate($this->before, $url, $next, $routeMatch);
-
         if ($next) $this->iterate($this->routes, $url, $next, $routeMatch);
-
         if ($next) $this->iterate($this->after, $url, $next, $routeMatch);
-
         if (!$routeMatch) {
             if ($this->error) ($this->error)();
         }

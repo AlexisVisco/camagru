@@ -14,6 +14,7 @@ abstract class Storage
         $this->database = new Database();
     }
 
+    abstract function update();
 
     abstract function save();
 

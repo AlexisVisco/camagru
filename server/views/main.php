@@ -1,5 +1,6 @@
 <?php
 $user = User::getUser();
+/* @var string $body */
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +56,7 @@ $user = User::getUser();
                             </ul>
                             <?php } else { ?>
                                 <li><a href="/">Paramètres</a></li>
-                                <li><a href="/">Mon Profil</a></li>
+                                <li><a href="/">Ma page</a></li>
                                 <li><a href="/<?php echo Routes::$USER_LOGOUT ?>">Se deconnecter</a></li>
                             <?php } ?>
                         </div>

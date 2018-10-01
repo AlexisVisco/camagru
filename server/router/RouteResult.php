@@ -35,9 +35,7 @@ class RouteResult
             try {
                 $reflectionMethod = new ReflectionMethod($this->route->class, $this->route->method);
                 $result = $reflectionMethod->invokeArgs(new $this->route->class(), $this->parameters);
-
                 if (gettype($result) == "boolean") return $result;
-
                 return true;
             } catch (ReflectionException $e) {
                 return false;

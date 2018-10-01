@@ -10,7 +10,7 @@ class Autoloader{
     static function register(){
 
         require_once 'FlashMessage.php';
-        require_once 'Errors.php';
+        require_once 'Messages.php';
         require_once 'Mailer.php';
 
         spl_autoload_register(array(__CLASS__, 'autoload'));

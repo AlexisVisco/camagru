@@ -17,25 +17,33 @@ class User extends Storage
     public function __construct()
     {
         parent::__construct();
+    }
+
+    public function init($username, $email, $password)
+    {
+        $this->username = $username;
+        $this->email = $email;
+        $this->password = $password;
         $this->id = self::uuid();
         $this->token = self::uuid();
     }
 
-    public function init($username, $email, $password) {
-        $this->username = $username;
-        $this->email = $email;
-        $this->password = $password;
+    public function newToken() {
+        $this->token = self::uuid();
     }
 
-    public function login() {
+    public function login()
+    {
         $_SESSION["user"] = json_encode($this);
     }
 
-    public static function logout() {
+    public static function logout()
+    {
         $_SESSION["user"] = NULL;
     }
 
-    public static function getUser() {
+    public static function getUser()
+    {
         $u = new User();
         if (!isset($_SESSION["user"]) || $_SESSION["user"] == NULL) return NULL;
         $uDecoded = json_decode($_SESSION["user"]);
@@ -46,9 +54,20 @@ class User extends Storage
     public function save()
     {
         return $this->database->q(
-            /** @lang MySQL */
+        /** @lang MySQL */
             "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)",
-            array_slice(array_values((array) $this), 0, 7)
+            array_slice(array_values((array)$this), 0, 7)
+        )->errorCode();
+    }
+
+    public function update()
+    {
+        return $this->database->q(
+            /** @lang MySQL */
+            "UPDATE user
+            SET id=?, username=?, email=?, password=?, confirmed=?, notified=?, token=?
+            WHERE id='$this->id'",
+            array_slice(array_values((array)$this), 0, 7)
         )->errorCode();
     }
 

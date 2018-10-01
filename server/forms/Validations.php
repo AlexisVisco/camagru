@@ -22,7 +22,7 @@ class Validations
     public static function validateUserPassword($pwd, $pwdConfirm) : bool {
 
         if ($pwd != $pwdConfirm) {
-            Errors::passwordShouldMatch();
+            Messages::passwordShouldMatch();
             return false;
         }
 
@@ -41,7 +41,7 @@ class Validations
         if (!preg_match("/$number/", $password))  $good = false;
 
         if (!$good) {
-            Errors::passwordShouldHaveComplexity();
+            Messages::passwordShouldHaveComplexity();
             return false;
         }
         return true;
@@ -50,7 +50,7 @@ class Validations
     public static function isGoodEmail(string $email) : bool
     {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            Errors::emailShouldBeValid();
+            Messages::emailShouldBeValid();
             return false;
         }
         return true;
@@ -59,8 +59,8 @@ class Validations
     public static function isExisteableEmail(User $user, string $email, bool $shouldExist): bool
     {
         if ($user->exist("email", $email) != $shouldExist) {
-            if ($shouldExist) Errors::emailShouldExist();
-            else Errors::emailShouldBeUnique();
+            if ($shouldExist) Messages::emailShouldExist();
+            else Messages::emailShouldBeUnique();
             return false;
         }
         return true;
@@ -69,8 +69,8 @@ class Validations
     public static function isExisteableUsername(User $user, string $username, bool $shouldExist): bool
     {
         if ($user->exist("username", $username) != $shouldExist) {
-            if ($shouldExist) Errors::usernameShouldExist();
-            else Errors::usernameShouldBeUnique();
+            if ($shouldExist) Messages::usernameShouldExist();
+            else Messages::usernameShouldBeUnique();
             return false;
         }
         return true;
@@ -80,7 +80,7 @@ class Validations
     {
         $re = /** @lang RegExp */ "^[A-Za-z0-9]{3,32}$";
         if (!preg_match("/$re/", $username)) {
-            Errors::usernameShouldBeValid();
+            Messages::usernameShouldBeValid();
             return false;
         }
         return true;
