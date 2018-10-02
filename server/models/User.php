@@ -77,6 +77,15 @@ class User extends Storage
         )->errorCode();
     }
 
+    function delete()
+    {
+        return $this->database->q(
+        /** @lang MySQL */
+            "DELETE FROM token WHERE id = ?",
+            [$this->id]
+        )->errorCode();
+    }
+
     public function load($id)
     {
         return $this->loadWhere("id", $id);

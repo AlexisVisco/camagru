@@ -8,15 +8,20 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 
-CREATE TABLE user(
-			id VARCHAR(255) PRIMARY KEY,
-			username VARCHAR(255) UNIQUE NOT NULL,
-			email VARCHAR(255) UNIQUE NOT NULL,
-			password VARCHAR(255) NOT NULL,
-			confirmed BOOLEAN DEFAULT 0,
-      notified BOOLEAN DEFAULT 0,
-			token VARCHAR(255)
-);
+CREATE TABLE `user`(
+			`id` VARCHAR(255) PRIMARY KEY,
+			`username` VARCHAR(255) UNIQUE NOT NULL,
+			`email` VARCHAR(255) UNIQUE NOT NULL,
+			`password` VARCHAR(255) NOT NULL,
+			`confirmed` BOOLEAN DEFAULT 0,
+      `notified` BOOLEAN DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `token` (
+  `id` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `type` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

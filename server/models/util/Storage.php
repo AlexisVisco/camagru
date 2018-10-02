@@ -18,6 +18,8 @@ abstract class Storage
 
     abstract function save();
 
+    abstract function delete();
+
     abstract public function load($id);
 
     abstract function loadWhere($field, $value);
