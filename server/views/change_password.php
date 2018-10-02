@@ -3,7 +3,7 @@
         <h3 class="title has-text-grey">Et un nouveau mot de passe !</h3>
         <p class="subtitle has-text-grey">Hop! Magie un nuveau mot de passe?</p>
         <div class="box">
-            <form method="post" action="/<?php echo Routes::$USER_CHANGE_PWD ?>">
+            <form method="post">
                 <?php FlashMessage::html() ?>
                 <div class="field">
                     <div class="control">

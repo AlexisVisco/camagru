@@ -23,12 +23,18 @@ class User extends Storage
     {
         $this->username = $username;
         $this->email = $email;
-        $this->password = $password;
+        $this->setPassword($password);
         $this->id = self::uuid();
         $this->token = self::uuid();
     }
 
-    public function newToken() {
+    public function setPassword($pwd)
+    {
+        $this->password = password_hash(SALT . $pwd, PASSWORD_DEFAULT);
+    }
+
+    public function newToken()
+    {
         $this->token = self::uuid();
     }
 
@@ -63,7 +69,7 @@ class User extends Storage
     public function update()
     {
         return $this->database->q(
-            /** @lang MySQL */
+        /** @lang MySQL */
             "UPDATE user
             SET id=?, username=?, email=?, password=?, confirmed=?, notified=?, token=?
             WHERE id='$this->id'",

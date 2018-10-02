@@ -2,6 +2,8 @@
 
 require_once './config/Database.php';
 require_once './config/Routes.php';
+require_once './config/Mails.php';
+require_once './config/Conf.php';
 
 require_once './controllers/Autoloader.php';
 require_once './models/Autoloader.php';
@@ -10,8 +12,6 @@ require_once './forms/Autoloader.php';
 
 require_once './router/Router.php';
 
-define("ROOT", __DIR__);
-define("SALT", "f8e4w89fwefew");
 session_start();
 
 date_default_timezone_set('Europe/Paris');

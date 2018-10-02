@@ -54,4 +54,34 @@ class Messages
         $fm = new FlashMessage("Combinaison email mot de passe incorrecte.", FlashType::$ERROR);
         $fm->register();
     }
+
+    public static function successRegistration()
+    {
+        $fm = new FlashMessage("Vous venez de vous inscrire! Regardez vos mails pour valider votre compte", FlashType::$SUCCESS);
+        $fm->register();
+    }
+
+    public static function successPwdReset()
+    {
+        $fm = new FlashMessage("Un email pour réinitialisé votre mot de passe a été envoyé!", FlashType::$SUCCESS);
+        $fm->register();
+    }
+
+    public static function successAccountConfirmed()
+    {
+        $fm = new FlashMessage("Votre compte est validé, vous pouvez vous connecter!", FlashType::$SUCCESS);
+        $fm->register();
+    }
+
+    public static function successPasswordChanged()
+    {
+        $fm = new FlashMessage("Votre mot de passe a été changé vous pouvez maintenant vous connecter!", FlashType::$SUCCESS);
+        $fm->register();
+    }
+
+    public static function badEntity()
+    {
+        $fm = new FlashMessage("Hum qui es-tu ?", FlashType::$ERROR);
+        $fm->register();
+    }
 }

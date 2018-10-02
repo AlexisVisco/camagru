@@ -18,6 +18,7 @@ class UserController extends BaseController
 
     public function changePwd($id, $token)
     {
+        if (count($_POST) != 0) $this->postChangePwd($id, $token);
         echo self::render("change_password");
     }
 
@@ -33,6 +34,25 @@ class UserController extends BaseController
         $this->redirect("/");
     }
 
+    public function confirm($id, $token)
+    {
+        $user = new User();
+        $user = $user->load($id);
+        if ($user == NULL) {
+            $this->redirect("/");
+            return;
+        }
+        if ($user->confirmed == 0 && $user->token == $token) {
+            $user->confirmed = 1;
+            $user->token = "";
+            Messages::successAccountConfirmed();
+            $user->update();
+            $this->redirect("/" . Routes::$USER_LOGIN);
+            return;
+        }
+        $this->redirect("/");
+    }
+
     private function postRegister()
     {
         $ensure = $this->ensure(["email", "username", "password", "passwordConfirm"]);
@@ -41,13 +61,10 @@ class UserController extends BaseController
             $ur = new UserRegister($_POST);
             if ($ur->validate()) {
                 $user = new User();
-                $user->init(
-                    $ur->username, $ur->email,
-                    password_hash(SALT . $ur->password, PASSWORD_DEFAULT)
-                );
+                $user->init($ur->username, $ur->email, $ur->password);
                 $user->save();
-                $fm = new FlashMessage("Vous venez de vous inscrire! Regardez vos mails pour valider votre compte", FlashType::$SUCCESS);
-                $fm->register();
+                Messages::successRegistration();
+                Mails::userConfirmation($user);
                 $this->redirect("/" . Routes::$USER_LOGIN);
                 exit(0);
             }
@@ -70,26 +87,6 @@ class UserController extends BaseController
         }
     }
 
-    public function confirm($id, $token)
-    {
-        $user = new User();
-        $user = $user->load($id);
-        if ($user == NULL) {
-            $this->redirect("/");
-            return ;
-        }
-        if ($user->confirmed == 0 && $user->token == $token) {
-            $user->confirmed = 1;
-            $user->token = "";
-            $fm = new FlashMessage("Votre compte est validé, vous pouvez vous connecter!", FlashType::$SUCCESS);
-            $fm->register();
-            $user->update();
-            $this->redirect("/" . Routes::$USER_LOGIN);
-            return;
-        }
-        $this->redirect("/");
-    }
-
     private function postForgotPwd()
     {
         $ensure = $this->ensure(["email"]);
@@ -99,15 +96,31 @@ class UserController extends BaseController
             if ($ufp->validate()) {
                 $user = new User();
                 $user = $user->loadWhere("email", $ufp->email);
-                $user->token = $user->newToken();
-                $fm = new FlashMessage("Un email pour réinitialisé votre mot de passe a été envoyé!", FlashType::$SUCCESS);
-                $fm->register();
+                $user->newToken();
                 $user->update();
+                Mails::userForgotPassword($user);
+                Messages::successPwdReset();
                 $this->redirect("/" . Routes::$USER_LOGIN);
-                //todo send email
                 exit(0);
             }
         }
+    }
 
+    private function postChangePwd($id, $token)
+    {
+        $ensure = $this->ensure(["password", "passwordConfirm"]);
+        if (count($ensure) != 0) Messages::shouldEnsure($ensure);
+        else {
+            $ucp = new UserChangePassword($id, $token, $_POST);
+            if ($ucp->validate()) {
+                $user = new User();
+                $user = $user->load($id);
+                $user->setPassword($ucp->password);
+                $user->update();
+                Messages::successPasswordChanged();
+                $this->redirect("/" . Routes::$USER_LOGIN);
+                exit(0);
+            }
+        }
     }
 }
