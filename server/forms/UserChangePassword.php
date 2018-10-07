@@ -30,9 +30,11 @@ class UserChangePassword implements FormValidation
 
     function validate(): bool
     {
+        $tok = new Token();
         $emptyUser = new User();
         $emptyUser = $emptyUser->load($this->id);
-        if ($emptyUser->token == NULL || $this->token != $emptyUser->token) {
+        $tok = $tok->loadWhereWithType("token", $this->token, Token::$TYPE_FORGOT_PWD);
+        if (($tok == NULL || $emptyUser == null) || $emptyUser->id != $tok->id) {
             Messages::badEntity();
             return false;
         }

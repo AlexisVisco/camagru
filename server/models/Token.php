@@ -4,8 +4,8 @@
 class Token extends Storage
 {
 
-    public $token;
     public $id;
+    public $token;
     public $type;
 
     public static $TYPE_CONFIRM = 0;
@@ -17,13 +17,15 @@ class Token extends Storage
      */
     public function __construct()
     {
+        parent::__construct();
     }
 
     public function init($id, $type)
     {
-        $this->token = self::uuid();
+        $this->token = str_replace("-", "", self::uuid());
         $this->id = $id;
         $this->type = $type;
+        return $this;
     }
 
     function update()

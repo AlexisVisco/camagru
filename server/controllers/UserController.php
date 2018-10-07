@@ -38,13 +38,17 @@ class UserController extends BaseController
     {
         $user = new User();
         $user = $user->load($id);
-        if ($user == NULL) {
+
+        $tok = new Token();
+        $tok = $tok->loadWhereWithType("token", $token, Token::$TYPE_CONFIRM);
+
+        if (($user == NULL || $tok == NULL) || $tok->id != $user->id) {
             $this->redirect("/");
             return;
         }
-        if ($user->confirmed == 0 && $user->token == $token) {
+        if ($user->confirmed == 0) {
             $user->confirmed = 1;
-            $user->token = "";
+            $tok->delete();
             Messages::successAccountConfirmed();
             $user->update();
             $this->redirect("/" . Routes::$USER_LOGIN);
@@ -61,8 +65,12 @@ class UserController extends BaseController
             $ur = new UserRegister($_POST);
             if ($ur->validate()) {
                 $user = new User();
-                $user->init($ur->username, $ur->email, $ur->password);
-                $user->save();
+                $token = new Token();
+
+                $user->init($ur->username, $ur->email, $ur->password)->save();
+
+                $token->init($user->id, Token::$TYPE_CONFIRM)->save();
+
                 Messages::successRegistration();
                 Mails::userConfirmation($user);
                 $this->redirect("/" . Routes::$USER_LOGIN);
@@ -94,10 +102,15 @@ class UserController extends BaseController
         else {
             $ufp = new UserForgotPassword($_POST);
             if ($ufp->validate()) {
+
                 $user = new User();
                 $user = $user->loadWhere("email", $ufp->email);
-                $user->newToken();
-                $user->update();
+
+                if ($user != null) {
+                    $token = new Token();
+                    $token->init($user->id, Token::$TYPE_FORGOT_PWD)->save();
+                }
+
                 Mails::userForgotPassword($user);
                 Messages::successPwdReset();
                 $this->redirect("/" . Routes::$USER_LOGIN);
@@ -117,6 +130,10 @@ class UserController extends BaseController
                 $user = $user->load($id);
                 $user->setPassword($ucp->password);
                 $user->update();
+
+                $tok = new Token();
+                $tok->loadWhereWithType("token", $token, Token::$TYPE_FORGOT_PWD)->delete();
+
                 Messages::successPasswordChanged();
                 $this->redirect("/" . Routes::$USER_LOGIN);
                 exit(0);

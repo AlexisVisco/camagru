@@ -11,7 +11,6 @@ class User extends Storage
     public $password;
     public $confirmed = 0;
     public $notified = 1;
-    public $token;
 
 
     public function __construct()
@@ -25,17 +24,12 @@ class User extends Storage
         $this->email = $email;
         $this->setPassword($password);
         $this->id = self::uuid();
-        $this->token = self::uuid();
+        return $this;
     }
 
     public function setPassword($pwd)
     {
         $this->password = password_hash(SALT . $pwd, PASSWORD_DEFAULT);
-    }
-
-    public function newToken()
-    {
-        $this->token = self::uuid();
     }
 
     public function login()
@@ -61,8 +55,8 @@ class User extends Storage
     {
         return $this->database->q(
         /** @lang MySQL */
-            "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)",
-            array_slice(array_values((array)$this), 0, 7)
+            "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?)",
+            array_slice(array_values((array)$this), 0, 6)
         )->errorCode();
     }
 
@@ -71,9 +65,9 @@ class User extends Storage
         return $this->database->q(
         /** @lang MySQL */
             "UPDATE user
-            SET id=?, username=?, email=?, password=?, confirmed=?, notified=?, token=?
+            SET id=?, username=?, email=?, password=?, confirmed=?, notified=?
             WHERE id='$this->id'",
-            array_slice(array_values((array)$this), 0, 7)
+            array_slice(array_values((array)$this), 0, 6)
         )->errorCode();
     }
 
@@ -81,7 +75,7 @@ class User extends Storage
     {
         return $this->database->q(
         /** @lang MySQL */
-            "DELETE FROM token WHERE id = ?",
+            "DELETE FROM user WHERE id = ?",
             [$this->id]
         )->errorCode();
     }
