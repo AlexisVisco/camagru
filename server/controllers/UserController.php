@@ -72,7 +72,7 @@ class UserController extends BaseController
                 $token->init($user->id, Token::$TYPE_CONFIRM)->save();
 
                 Messages::successRegistration();
-                Mails::userConfirmation($user);
+                Mails::userConfirmation($user, $token);
                 $this->redirect("/" . Routes::$USER_LOGIN);
                 exit(0);
             }
@@ -109,9 +109,9 @@ class UserController extends BaseController
                 if ($user != null) {
                     $token = new Token();
                     $token->init($user->id, Token::$TYPE_FORGOT_PWD)->save();
+                    Mails::userForgotPassword($user, $token);
                 }
 
-                Mails::userForgotPassword($user);
                 Messages::successPwdReset();
                 $this->redirect("/" . Routes::$USER_LOGIN);
                 exit(0);

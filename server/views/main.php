@@ -16,8 +16,25 @@ $user = User::getUser();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"/>
     <style type="text/css">
         html,
+
         body {
             font-family: 'Open Sans', serif;
+            background-color: rgb(252, 252, 252);
+        }
+
+        .my-container {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+            border-radius: 3px;
+            padding: 10px;
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+        }
+
+        *:focus {
+            outline: none;
         }
 
         img {
@@ -57,6 +74,7 @@ $user = User::getUser();
                             <?php } else { ?>
                                 <li><a href="/">Paramètres</a></li>
                                 <li><a href="/">Ma page</a></li>
+                                <li><a href="/<?php echo Routes::$PICTURE_ADD_PHOTO ?>">Ajouter une photo</a></li>
                                 <li><a href="/<?php echo Routes::$USER_LOGOUT ?>">Se deconnecter</a></li>
                             <?php } ?>
                         </div>
