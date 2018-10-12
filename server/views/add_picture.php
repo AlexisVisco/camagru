@@ -1,5 +1,5 @@
 <?php
-    $_SIZE_CAM = 320 * 2;
+$_SIZE_CAM = 320 * 2;
 ?>
 
 <style>
@@ -9,10 +9,10 @@
         display: flex;
         flex-direction: column-reverse;
         width: <?php echo $_SIZE_CAM ?>px;
-        height: <?php echo $_SIZE_CAM ?>px;
         align-items: center;
         text-align: center;
-        top: -100px;
+        justify-content: space-around;
+        bottom: 45px;
     }
 
     .button-take {
@@ -32,40 +32,52 @@
         border: 6px solid rgb(255, 255, 255);
     }
 
+    .vid-up {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        width: 100%;
+    }
+
     .vid {
         justify-content: center;
         align-items: center;
-        width: <?php echo $_SIZE_CAM ?>px;
-        height: <?php echo $_SIZE_CAM ?>px;
+        z-index: 1000;
     }
 
 </style>
 
 <div class="container my-container">
-    <div class="level">
-        <div class="level-left" id="picture">
-            <div class="btn-d"><button class="button-take" id="shoot"></button></div>
-            <div class="vid"><video class="vid" id="video"></video></div>
-            <canvas id="canvas"></canvas>
-        </div>
+    <div id="picture" class="vid-up">
     </div>
+    <br>
 </div>
 
 <script>
-    (function () {
-        let videoHtml = `<div class="vid"><video class="vid" id="video"></video></div>`;
-        let btnHtml = `<div class="btn-d"><button class="button-take" id="shoot"></button></div>`;
-        let canvasHtml = `<canvas id="canvas"></canvas>`;
 
+    Element.prototype.remove = function () {
+        this.parentElement.removeChild(this);
+    };
+
+    NodeList.prototype.remove = HTMLCollection.prototype.remove = function () {
+        for (var i = this.length - 1; i >= 0; i--) {
+            if (this[i] && this[i].parentElement) {
+                this[i].parentElement.removeChild(this[i]);
+            }
+        }
+    };
+
+    (function () {
 
         let streaming = false;
-        let video = document.querySelector('#video');
-        let canvas = document.querySelector('#canvas');
-        let photo = document.querySelector('#photo');
-        let shootButton = document.querySelector('#shoot');
+
+        let video = undefined;
+        let shootButton = undefined;
 
         let width = <?php echo $_SIZE_CAM ?>;
         let height = <?php echo $_SIZE_CAM ?>;
+
+        videoInsert();
 
         navigator.getMedia = (navigator.getUserMedia ||
             navigator.webkitGetUserMedia ||
@@ -91,30 +103,64 @@
             }
         );
 
-        video.addEventListener('canplay', function (ev) {
+        function addVideoStreaming() {
             if (!streaming) {
-                console.log("Hello !")
                 height = video.videoHeight / (video.videoWidth / width);
                 video.setAttribute('width', width);
                 video.setAttribute('height', height);
-                canvas.setAttribute('width', width);
-                canvas.setAttribute('height', height);
+
+                console.log(video.videoWidth);
                 streaming = true;
             }
-        }, false);
-
-        function insertInCanvas() {
-            canvas.width = width;
-            canvas.height = height;
-            canvas.getContext('2d').drawImage(video, 0, 0, width, height);
-            let data = canvas.toDataURL('image/png');
-            photo.setAttribute('src', data);
         }
 
-        shootButton.addEventListener('click', function (ev) {
-            insertInCanvas();
-            ev.preventDefault();
-        }, false);
+        function createCanvasElement() {
+            let canvas = document.createElement("canvas");
+            canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth;
+            canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+
+            return canvas;
+        }
+
+        function clearPicture() {
+            document.getElementById("picture").innerHTML = "";
+            video = null;
+            shootButton = null;
+            streaming = false;
+        }
+
+        function videoInsert() {
+
+            document.getElementById("picture").insertAdjacentHTML(
+                "beforeend",
+                "<div class=\"btn-d\"><button class=\"button-take\" id=\"shoot\"></button></div>");
+
+
+            document.getElementById("picture").insertAdjacentHTML(
+                "beforeend",
+                "<div class=\"vid\"><video class=\"vid\" id=\"video\"></video></div>");
+
+            video = document.querySelector('#video');
+
+            shootButton = document.querySelector('#shoot');
+            video.addEventListener('canplay', addVideoStreaming, false);
+
+            shootButton.addEventListener('click', function (ev) {
+                let canvas = createCanvasElement();
+                video.remove();
+                clearPicture();
+                canvasInsert(canvas);
+                ev.preventDefault();
+            }, false);
+
+        }
+
+        function canvasInsert(c) {
+            c.id = "photo";
+            document.getElementById("picture").insertAdjacentElement("beforeend", c);
+        }
+
 
     })();
 </script>

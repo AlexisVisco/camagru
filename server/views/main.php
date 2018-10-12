@@ -31,6 +31,7 @@ $user = User::getUser();
             display: -ms-flexbox;
             display: -webkit-flex;
             display: flex;
+            width: 100%;
         }
 
         *:focus {
