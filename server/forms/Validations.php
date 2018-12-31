@@ -6,7 +6,7 @@ class Validations
 
         if (!self::isGoodEmail($email)) return false;
 
-        if (!self::isExisteableEmail($user, $email, $shouldExist)) return false;
+        if (!self::hasEmail($user, $email, $shouldExist)) return false;
 
         return true;
     }
@@ -14,7 +14,7 @@ class Validations
     public static function validateUserUsername(User $user, string $username, bool $shouldExist) {
         if (!self::isGoodUsername($username)) return false;
 
-        if (!self::isExisteableEmail($user, $username, $shouldExist)) return false;
+        if (!self::hasUsername($user, $username, $shouldExist)) return false;
 
         return true;
     }
@@ -56,7 +56,7 @@ class Validations
         return true;
     }
 
-    public static function isExisteableEmail(User $user, string $email, bool $shouldExist): bool
+    public static function hasEmail(User $user, string $email, bool $shouldExist): bool
     {
         if ($user->exist("email", $email) != $shouldExist) {
             if ($shouldExist) Messages::emailShouldExist();
@@ -66,7 +66,7 @@ class Validations
         return true;
     }
 
-    public static function isExisteableUsername(User $user, string $username, bool $shouldExist): bool
+    public static function hasUsername(User $user, string $username, bool $shouldExist): bool
     {
         if ($user->exist("username", $username) != $shouldExist) {
             if ($shouldExist) Messages::usernameShouldExist();

@@ -41,6 +41,7 @@ class FlashMessage
     public static function html() {
         include ROOT . "/views/util/notifications.php";
     }
+
 }
 
 class FlashType {
