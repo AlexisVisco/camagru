@@ -9,10 +9,12 @@ $_SIZE_CAM = 320 * 2;
                 <div class="box" id="webcam">
                     <div class="columns">
                         <div class="column">
-                            <video id="video"></video>
+                            <canvas id="canvas_preview" style="position: absolute; z-index: 1" width="500"></canvas>
+                            <video  style="z-index: 0" id="video"></video>
                         </div>
                         <div class="column"
                              id="show" <?php if (!isset($file_path)) { ?> style="display: None" <?php } ?>>
+
                             <canvas id="canvas" style="display: none"></canvas>
                             <img id="photo" src="" alt="Your" width="500">
                         </div>
@@ -64,7 +66,7 @@ $_SIZE_CAM = 320 * 2;
                                value="thug_glasses" alt="thug_glasses"
                                src="/public/img/thug_glasses.png" height="150">
                     </div>
-                    <button class="button is-primary">Preview</button>
+                    <button class="button is-primary" onclick="preview(event, '/public/img/thug_glasses.png')">Preview</button>
                 </div>
                 <div class="column is-one-quarter">
                     <div class="box">
@@ -73,7 +75,7 @@ $_SIZE_CAM = 320 * 2;
                                src="/public/img/dog.png"
                                height="150">
                     </div>
-                    <button class="button is-primary">Preview</button>
+                    <button class="button is-primary" onclick="preview(event, '/public/img/dog.png')">Preview</button>
                 </div>
                 <div class="column is-one-quarter">
                     <div class="box">
@@ -82,7 +84,7 @@ $_SIZE_CAM = 320 * 2;
                                src="/public/img/glasses.png"
                                height="150">
                     </div>
-                    <button class="button is-primary">Preview</button>
+                    <button class="button is-primary" onclick="preview(event, '/public/img/glasses.png')">Preview</button>
                 </div>
                 <div class="column is-one-quarter">
                     <div class="box">
@@ -91,7 +93,7 @@ $_SIZE_CAM = 320 * 2;
                                src="/public/img/horror.png"
                                height="150">
                     </div>
-                    <button class="button is-primary">Preview</button>
+                    <button class="button is-primary" onclick="preview(event, '/public/img/horror.png')">Preview</button>
                 </div>
                 <input id="photo_input_2" type="hidden" name="raw">
             </div>
