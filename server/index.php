@@ -27,20 +27,21 @@ $router
 
     // HOME ROUTE
     //
-    ->addRoute("",                              "HomeController@index",             RouteOrder::$ROUTE)
+    ->addRoute("",                                  "HomeController@index",             RouteOrder::$ROUTE)
 
     // USER ROUTES
     //
-    ->addRoute(Routes::$USER_CONFIRM,           "UserController@confirm",           RouteOrder::$ROUTE)
-    ->addRoute(Routes::$USER_REGISTER,          "UserController@register",          RouteOrder::$ROUTE)
-    ->addRoute(Routes::$USER_LOGIN,             "UserController@login",             RouteOrder::$ROUTE)
-    ->addRoute(Routes::$USER_LOGOUT,            "UserController@logout",            RouteOrder::$ROUTE)
-    ->addRoute(Routes::$USER_FORGOT_PWD,        "UserController@forgotPwd",         RouteOrder::$ROUTE)
-    ->addRoute(Routes::$USER_CHANGE_PWD,        "UserController@changePwd",         RouteOrder::$ROUTE)
+    ->addRoute(Routes::$USER_CONFIRM,               "UserController@confirm",           RouteOrder::$ROUTE)
+    ->addRoute(Routes::$USER_REGISTER,              "UserController@register",          RouteOrder::$ROUTE)
+    ->addRoute(Routes::$USER_LOGIN,                 "UserController@login",             RouteOrder::$ROUTE)
+    ->addRoute(Routes::$USER_LOGOUT,                "UserController@logout",            RouteOrder::$ROUTE)
+    ->addRoute(Routes::$USER_FORGOT_PWD,            "UserController@forgotPwd",         RouteOrder::$ROUTE)
+    ->addRoute(Routes::$USER_CHANGE_PWD,            "UserController@changePwd",         RouteOrder::$ROUTE)
 
     // PICTURE ROUTES
     //
-    ->addRoute(Routes::$PICTURE_ADD_PHOTO,      "PictureController@addPicture",     RouteOrder::$ROUTE)
+    ->addRoute(Routes::$PICTURE_ADD_PHOTO,          "PictureController@addPicture",     RouteOrder::$ROUTE)
+    ->addRoute(Routes::$PICTURE_ADD_PHOTO_UPLOAD,   "PictureController@addPictureUpload",     RouteOrder::$ROUTE)
 
     // 404 NOT FOUND
     //

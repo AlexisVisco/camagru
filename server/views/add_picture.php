@@ -3,20 +3,27 @@ $_SIZE_CAM = 320 * 2;
 ?>
 
 <div class="container has-text-centered">
+    <div class="column" style="padding-bottom: 20px">
+        <section class="column is-three-quarters">
+            <?php FlashMessage::html() ?>
+        </section>
+    </div>
     <div class="columns">
         <section class="section hero has-text-centered is-bold is-full">
             <div class="container">
                 <div class="box" id="webcam">
                     <div class="columns">
                         <div class="column">
-                            <canvas id="canvas_preview" style="position: absolute; z-index: 1" width="500"></canvas>
+                            <canvas id="canvas_preview" style="position: absolute; z-index: 1" height="500"></canvas>
                             <video  style="z-index: 0" id="video"></video>
                         </div>
                         <div class="column"
-                             id="show" <?php if (!isset($file_path)) { ?> style="display: None" <?php } ?>>
+                             id="show" <?php if (!isset($fileb64)) { ?> style="display: None" <?php } ?>>
 
                             <canvas id="canvas" style="display: none"></canvas>
-                            <img id="photo" src="" alt="Your" width="500">
+                            <img id="photo" src="<?php if (isset($fileb64)) { echo  $fileb64; } ?>" alt="Your"
+                                 width="500"
+                                 height="350">
                         </div>
                     </div>
                     <div class="field is-grouped is-grouped-centered">
@@ -25,14 +32,14 @@ $_SIZE_CAM = 320 * 2;
                             </button>
                         </p>
                         <p class="control">
-                        <div id="save" <?php if (!isset($file_path)) { ?> style="display: None" <?php } ?>>
+                        <div id="save">
                             <form action="/picture/save" method="post">
                                 <input id="photo_input" type="hidden" name="data">
                             </form>
                         </div>
                         <div>
                             <form enctype="multipart/form-data" method="POST"
-                                  action="/picture/upload">
+                                  action="/<? echo Routes::$PICTURE_ADD_PHOTO_UPLOAD ?>">
                                 <input type="hidden" name="MAX_FILE_SIZE"
                                        value="3000000"/>
                                 <div class="file">
@@ -58,7 +65,7 @@ $_SIZE_CAM = 320 * 2;
 <section class="section hero has-text-centered is-bold"
          style="padding: 1.5rem 1.5rem !important; padding-right: 0 !important;">
     <form action="/picture/mount" method="post">
-        <div id="montage" class="container" style="display: None">
+        <div id="montage" class="container">
             <div class="columns is-multiline">
                 <div class="column is-one-quarter">
                     <div class="box">

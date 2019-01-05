@@ -32,8 +32,11 @@ function setPreview() {
         console.log(width, height, width / 2 + (desc[preview_img].w / 2));
         canvas_preview.getContext('2d').drawImage(
             img,
-            width / 2 - (desc[preview_img].w / 2) + (desc[preview_img].dw), height / 2 - (desc[preview_img].h / 2) + (desc[preview_img].dh),
-            desc[preview_img].h, desc[preview_img].w);
+            width / 2 - (desc[preview_img].w / 2) + (desc[preview_img].dw),
+            height / 2 - (desc[preview_img].h / 2) + (desc[preview_img].dh),
+
+            desc[preview_img].h,
+            desc[preview_img].w);
     };
     img.src = preview_img;
 }

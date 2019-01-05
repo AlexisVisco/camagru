@@ -84,4 +84,40 @@ class Messages
         $fm = new FlashMessage("Hum qui es-tu ?", FlashType::$ERROR);
         $fm->register();
     }
+
+    public static function pictureUploadInvalid()
+    {
+        $fm = new FlashMessage("Image invalide.", FlashType::$ERROR);
+        $fm->register();
+    }
+
+    public static function pictureUploadNoFileSent()
+    {
+        $fm = new FlashMessage("Aucun fichier reçu.", FlashType::$ERROR);
+        $fm->register();
+    }
+
+    public static function pictureUploadErrSize()
+    {
+        $fm = new FlashMessage("La taille du fichier est supérieur à 1 MO.", FlashType::$ERROR);
+        $fm->register();
+    }
+
+    public static function pictureUploadErrType()
+    {
+        $fm = new FlashMessage("Le type du fichier est invalide. (authorisé: jpeg et png)", FlashType::$ERROR);
+        $fm->register();
+    }
+
+    public static function pictureUploadInvalidSize()
+    {
+        $fm = new FlashMessage("La taille du fichier est invalide.", FlashType::$ERROR);
+        $fm->register();
+    }
+
+    public static function pictureUploadError()
+    {
+        $fm = new FlashMessage("Erreur survenue lors du traitement du fichier.", FlashType::$ERROR);
+        $fm->register();
+    }
 }
