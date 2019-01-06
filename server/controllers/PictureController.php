@@ -8,7 +8,13 @@ class PictureController extends BaseController
     private $max_file_size = 100000 * 10;
 
     function addPicture() {
-        echo self::render("add_picture");
+        if (count($_POST) != 0 || count($_FILES) != 0) $this->postMountPicture();
+        else echo self::render("add_picture");
+    }
+
+    function postMountPicture() {
+         var_dump($_FILES);
+         var_dump($_POST);
     }
 
     function addPictureUpload() {

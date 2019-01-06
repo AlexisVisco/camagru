@@ -40,7 +40,7 @@ $router
 
     // PICTURE ROUTES
     //
-    ->addRoute(Routes::$PICTURE_ADD_PHOTO,          "PictureController@addPicture",     RouteOrder::$ROUTE)
+    ->addRoute(Routes::$PICTURE_ADD_PHOTO,          "PictureController@addPicture",           RouteOrder::$ROUTE)
     ->addRoute(Routes::$PICTURE_ADD_PHOTO_UPLOAD,   "PictureController@addPictureUpload",     RouteOrder::$ROUTE)
 
     // 404 NOT FOUND
