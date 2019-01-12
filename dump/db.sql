@@ -15,13 +15,34 @@ CREATE TABLE `user`(
 	`password` VARCHAR(255) NOT NULL,
 	`confirmed` BOOLEAN DEFAULT 0,
   `notified` BOOLEAN DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
 
 CREATE TABLE `token` (
   `id` varchar(255) NOT NULL,
   `token` varchar(255) PRIMARY KEY,
   `type` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+);
+
+
+CREATE TABLE `picture` (
+  `ìd` VARCHAR(255) PRIMARY KEY,
+  `id_user` VARCHAR(255) NOT NULL,
+  `data` VARCHAR(255) NOT NULL,
+  `date` DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `like` (
+  `id_picture` VARCHAR(255) PRIMARY KEY,
+  `id_user` VARCHAR(255),
+  `date` DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE `comment` (
+  `id_picture` VARCHAR(255) PRIMARY KEY,
+  `id_user` VARCHAR(255),
+  `body` TEXT NOT NULL,
+  `date` DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

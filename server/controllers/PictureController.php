@@ -7,17 +7,40 @@ class PictureController extends BaseController
     private $authorized_file = array('jpg' => 'image/jpeg', 'png' => 'image/png');
     private $max_file_size = 100000 * 10;
 
-    function addPicture() {
-        if (count($_POST) != 0 || count($_FILES) != 0) $this->postMountPicture();
+    function addPicture()
+    {
+        if (count($_POST) != 0) $this->postMountPicture();
         else echo self::render("add_picture");
     }
 
-    function postMountPicture() {
-         var_dump($_FILES);
-         var_dump($_POST);
+    function postMountPicture()
+    {
+        $ensure = $this->ensure(["raw", "has_composition"]);
+        if (count($ensure) != 0) {
+            Messages::shouldEnsure($ensure);
+            echo self::render("add_picture");
+        } else {
+            $raw =  str_replace("data:image/png;base64,", "", $_POST["raw"]);
+            $decoded_raw = base64_decode($raw);
+            echo (strlen($raw)/1.37);
+            $img = imagecreatefromstring($decoded_raw);
+
+            imagepng($img, 'tmp.png');
+            $info = getimagesize('tmp.png');
+            var_dump($info);
+            unlink('tmp.png');
+
+            var_dump($img);
+            if ($_POST["has_composition"] == "true") {
+                $composition_opt = json_decode($_POST["composition_img"]);
+            } else {
+
+            }
+        }
     }
 
-    function addPictureUpload() {
+    function addPictureUpload()
+    {
         $f = $_FILES["userfile"];
 
         if (!isset($f['error']) || is_array($f['error'])) {
