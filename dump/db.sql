@@ -38,8 +38,9 @@ CREATE TABLE `like` (
 );
 
 CREATE TABLE `comment` (
-  `id_picture` VARCHAR(255) PRIMARY KEY,
-  `id_user` VARCHAR(255),
+  `id` VARCHAR(255) PRIMARY KEY,
+  `id_picture` VARCHAR(255) NOT NULL,
+  `id_user` VARCHAR(255) NOT NULL,
   `body` TEXT NOT NULL,
   `date` DATETIME DEFAULT CURRENT_TIMESTAMP
 );

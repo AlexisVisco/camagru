@@ -1,37 +1,36 @@
 <?php
 
-class Picture extends Storage
-{
+class Comment extends Storage {
 
     private $id;
+    private $id_picture;
     private $id_user;
-    private $data;
+    private $body;
     private $date;
-
 
     public function __construct()
     {
         parent::__construct();
     }
 
-    public function init($id_user, $b64img)
-    {
+    public function init($id_picture, $id_user, $body) {
         $this->id = self::uuid();
+        $this->id_picture = $id_picture;
         $this->id_user = $id_user;
-        $this->data = $b64img;
+        $this->body = htmlspecialchars($body);
         $this->date = date('Y-m-d H:i:s');
     }
 
     function update()
     {
-        return;
+        return ;
     }
 
     function save()
     {
         return $this->database->q(
         /** @lang MySQL */
-            "INSERT INTO picture VALUES (?, ?, ?, ?)",
+            "INSERT INTO comment VALUES (?, ?, ?, ?)",
             array_slice(array_values((array)$this), 0, 4)
         )->errorCode();
     }
@@ -40,36 +39,26 @@ class Picture extends Storage
     {
         return $this->database->q(
         /** @lang MySQL */
-            "DELETE FROM picture WHERE id = ?",
+            "DELETE FROM comment WHERE id = ?",
             [$this->id]
         )->errorCode();
     }
 
-    public function load($id_user)
+    public function load($id)
     {
-        return $this->loadWhere("id_user", $id_user);
+        return $this->loadWhere("id", $id);
     }
 
     function loadWhere($field, $val)
     {
         return $this->database->tc(__CLASS__,
             /** @lang MySQL */
-            "SELECT * FROM picture WHERE $field = ?", [$val]
+            "SELECT * FROM comment WHERE $field = ?", [$val]
         );
     }
 
     function exist($field, $value): bool
     {
         return $this->loadWhere($field, $value) != NULL;
-    }
-
-    static function pictures($currentPage, $amountPage)
-    {
-        $offset = $currentPage * $amountPage;
-        $d = new Database();
-        return $d->lst(
-        /** @lang MySQL */
-            "SELECT * FROM `picture` ORDER BY date LIMIT $amountPage OFFSET $offset"
-        );
     }
 }

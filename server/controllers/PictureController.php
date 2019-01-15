@@ -132,6 +132,7 @@ class PictureController extends BaseController
 
 
     function gallery() {
+        var_dump(Picture::pictures(0, 9));
         echo self::render("gallery");
     }
 }
