@@ -32,4 +32,20 @@ class BaseController
         }
         return $list;
     }
+
+    /**
+     * @param array $fields list of fields name to ensure are set and not blank
+     * @param array $arr the main list where fields need to be in
+     * @return array of fields that are missing or blank
+     */
+    public function ensureArr($arr, $fields) : array {
+        $list = [];
+        foreach ($fields as $field) {
+            if (!array_key_exists($field, $arr)) {
+                $list[$field] = true;
+            }
+        }
+        return $list;
+    }
+
 }

@@ -13,6 +13,7 @@ class PictureController extends BaseController
         else echo self::render("add_picture");
     }
 
+
     function postMountPicture()
     {
         $ensure = $this->ensure(["raw", "has_composition"]);
@@ -21,18 +22,48 @@ class PictureController extends BaseController
             echo self::render("add_picture");
         } else {
             $raw =  str_replace("data:image/png;base64,", "", $_POST["raw"]);
-            $decoded_raw = base64_decode($raw);
-            echo (strlen($raw)/1.37);
-            $img = imagecreatefromstring($decoded_raw);
-
-            imagepng($img, 'tmp.png');
-            $info = getimagesize('tmp.png');
-            var_dump($info);
-            unlink('tmp.png');
-
-            var_dump($img);
+            $decodedRaw = base64_decode($raw);
+            $size = strlen($raw)/1.37; // in bytes
+            $img = imagecreatefromstring($decodedRaw);
+            if ($size > $this->max_file_size) {
+                echo "error 1";
+                return;
+            }
+            else if ($img == false) {
+                echo "error 2";
+                return;
+            }
+            $filename = Storage::uuid() . '.png';
+            imagepng($img, $filename);
+            $info = getimagesize($filename);
             if ($_POST["has_composition"] == "true") {
-                $composition_opt = json_decode($_POST["composition_img"]);
+                $compositionOpt = json_decode($_POST["composition_img"], true);
+                $ensureComp = $this->ensureArr($compositionOpt, ["location", "desc"]);
+                if (count($ensureComp) != 0) {
+                    echo "error 3";
+                    return;
+                } else {
+                    $ensureDesc = $this->ensureArr($compositionOpt["desc"], ["w", "h", "dw", "dh"]);
+                    if (count($ensureDesc) != 0) {
+                        echo "error 4";
+                        return;
+                    }
+                }
+                $alpha = imagecreatefrompng(ROOT . $compositionOpt["location"]);
+
+
+                imagecopymerge($img, $alpha,
+                    (imagesx($img) / 2) - (imagesx($alpha) / 2) + ($compositionOpt["desc"]["dw"]),
+                    (imagesy($img) / 2) - (imagesy($alpha) / 2) + ($compositionOpt["desc"]["dh"]),
+                    0, 0,  200, 200, 100);
+                imagepng($img, $filename);
+                imagedestroy($img);
+                imagedestroy($alpha);
+                $type = pathinfo($filename, PATHINFO_EXTENSION);
+                $data = file_get_contents($filename);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                unlink($filename);
+                echo "<img src=\"$base64\">";
             } else {
 
             }
@@ -59,15 +90,19 @@ class PictureController extends BaseController
             case UPLOAD_ERR_NO_FILE:
                 Messages::pictureUploadNoFileSent();
                 $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
+                break;
             case UPLOAD_ERR_INI_SIZE:
                 Messages::pictureUploadInvalidSize();
                 $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
+                break;
             case UPLOAD_ERR_FORM_SIZE:
                 Messages::pictureUploadErrSize();
                 $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
+                break;
             default:
                 Messages::pictureUploadInvalid();
                 $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
+                break;
         }
 
         $finfo = new finfo(FILEINFO_MIME_TYPE);
