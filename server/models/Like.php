@@ -15,7 +15,6 @@ class Like extends Storage {
         $this->id_user = $id_user;
         $this->id_picture = $id_picture;
         $this->date = date('Y-m-d H:i:s');
-
     }
 
     function update()
