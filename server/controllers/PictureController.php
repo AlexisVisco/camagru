@@ -25,6 +25,7 @@ class PictureController extends BaseController
             $raw =  str_replace("data:image/png;base64,", "", $_POST["raw"]);
             $decodedRaw = base64_decode($raw);
             $size = strlen($raw)/1.37; // in bytes
+
             if ($size > $this->max_file_size) {
                 Messages::pictureUploadInvalidSize();
                 $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
@@ -62,6 +63,7 @@ class PictureController extends BaseController
                 imagepng($img, $filename);
                 imagedestroy($img);
                 imagedestroy($alpha);
+
                 $type = pathinfo($filename, PATHINFO_EXTENSION);
                 $data = file_get_contents($filename);
                 $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
@@ -126,5 +128,10 @@ class PictureController extends BaseController
         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
         echo self::render("add_picture", ["fileb64" => $base64]);
+    }
+
+
+    function gallery() {
+        echo self::render("gallery");
     }
 }

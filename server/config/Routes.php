@@ -13,5 +13,6 @@ class Routes {
 
     public static $PICTURE_ADD_PHOTO = "ajouter-une-photo/";
     public static $PICTURE_ADD_PHOTO_UPLOAD = "ajouter-une-photo/depuis-mon-pc/";
+    public static $PICTURE_GALLERY = "gallerie/";
 
 }

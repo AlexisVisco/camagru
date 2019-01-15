@@ -14,7 +14,7 @@
             </h2>
             <br>
             <p class="has-text-centered">
-                <a class="button is-medium is-info is-outlined">
+                <a href="/<?php echo Routes::$PICTURE_GALLERY ?>" class="button is-medium is-info is-outlined">
                     Gallerie!
                 </a>
             </p>

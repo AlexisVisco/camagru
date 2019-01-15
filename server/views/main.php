@@ -64,7 +64,7 @@ $user = User::getUser();
                         <div class="tabs is-right">
                             <ul>
                                 <li><a href="/">Accueil</a></li>
-                                <li><a href="/">Gallerie</a></li>
+                                <li><a href="/<?php echo Routes::$PICTURE_GALLERY ?>">Gallerie</a></li>
 
                                 <?php if ($user == NULL) { ?>
                                 <a href="/<?php echo Routes::$USER_REGISTER ?>" style="margin-left: 10px"
