@@ -120,4 +120,10 @@ class Messages
         $fm = new FlashMessage("Erreur survenue lors du traitement du fichier.", FlashType::$ERROR);
         $fm->register();
     }
+
+    public static function pictureUploadSuccess()
+    {
+        $fm = new FlashMessage("La photo a bien été créée.", FlashType::$SUCCESS);
+        $fm->register();
+    }
 }

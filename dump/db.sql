@@ -27,7 +27,7 @@ CREATE TABLE `token` (
 CREATE TABLE `picture` (
   `id` VARCHAR(255) PRIMARY KEY,
   `id_user` VARCHAR(255) NOT NULL,
-  `data` VARCHAR(255) NOT NULL,
+  `data` MEDIUMTEXT NOT NULL,
   `date` DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -43,6 +43,9 @@ CREATE TABLE `comment` (
   `body` TEXT NOT NULL,
   `date` DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO `user` (`id`, `username`, `email`, `password`, `confirmed`, `notified`) VALUES
+('84d9d013-5dae-4430-a8e7-e251f57377d8', 'alexis', 'alexis.viscogliosi@outlook.fr', '$2y$10$j2GaEXNSOvubDjsoKHHWaeG0iTkGYOKEcwxrKDwz2SRdUkqm1XGou', 1, 1);
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

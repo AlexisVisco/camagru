@@ -18,6 +18,7 @@ class Picture extends Storage
         $this->id = self::uuid();
         $this->id_user = $id_user;
         $this->data = $b64img;
+        $this->date = date('Y-m-d H:i:s');
     }
 
     function update()
@@ -29,8 +30,8 @@ class Picture extends Storage
     {
         return $this->database->q(
         /** @lang MySQL */
-            "INSERT INTO user VALUES (?, ?, ?)",
-            array_slice(array_values((array)$this), 0, 3)
+            "INSERT INTO picture VALUES (?, ?, ?, ?)",
+            array_slice(array_values((array)$this), 0, 4)
         )->errorCode();
     }
 
@@ -38,7 +39,7 @@ class Picture extends Storage
     {
         return $this->database->q(
         /** @lang MySQL */
-            "DELETE FROM user WHERE id = ?",
+            "DELETE FROM picture WHERE id = ?",
             [$this->id]
         )->errorCode();
     }
@@ -52,7 +53,7 @@ class Picture extends Storage
     {
         return $this->database->tc(__CLASS__,
             /** @lang MySQL */
-            "SELECT * FROM user WHERE $field = ?", [$val]
+            "SELECT * FROM picture WHERE $field = ?", [$val]
         );
     }
 
