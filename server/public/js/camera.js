@@ -95,8 +95,7 @@ navigator.getMedia(
         if (navigator.mozGetUserMedia) {
             video.mozSrcObject = stream;
         } else {
-            var vendorURL = window.URL || window.webkitURL;
-            video.src = vendorURL.createObjectURL(stream);
+            video.srcObject=stream;
         }
         video.play();
     },

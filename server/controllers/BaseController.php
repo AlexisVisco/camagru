@@ -10,8 +10,11 @@ class BaseController
     }
 
     public static function render($file, $variables = []) {
-        extract($variables);
+        if ($file == "home") {
+            $variables["fullheight"] = "is-fullheight";
+        }
         ob_start();
+        extract($variables);
         include ROOT . "/views/$file.php";
         $body = ob_get_clean();
         ob_start();

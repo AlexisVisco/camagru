@@ -11,6 +11,7 @@ class Routes {
     public static $USER_FORGOT_PWD = "mot-de-passe-oublie/";
     public static $USER_CHANGE_PWD = "changer-de-mot-de-passe/(.+)/(.+)/";
 
+    public static $PICTURE_LIKE = "like/(.+)/";
     public static $PICTURE_ADD_PHOTO = "ajouter-une-photo/";
     public static $PICTURE_ADD_PHOTO_UPLOAD = "ajouter-une-photo/depuis-mon-pc/";
     public static $PICTURE_GALLERY = "gallerie/";

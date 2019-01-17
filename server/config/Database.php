@@ -34,6 +34,18 @@ class Database extends PDO
         return $res;
     }
 
+    public function ta($query, $arguments = [])
+    {
+        $statement = self::prepare($query);
+        $statement->execute($arguments);
+        $res = $statement->fetchObject();
+        if (gettype($res) == "boolean") {
+            return NULL;
+        }
+        return $res;
+    }
+
+
     public function lst($query, $arguments = []) {
         $statement = self::prepare($query);
         $statement->execute($arguments);

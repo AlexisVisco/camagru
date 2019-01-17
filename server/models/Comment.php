@@ -61,4 +61,14 @@ class Comment extends Storage {
     {
         return $this->loadWhere($field, $value) != NULL;
     }
+
+    static function comments($pictureId)
+    {
+        $d = new Database();
+        return (int)$d->ta(
+        /** @lang MySQL */
+            "SELECT count(*) AS counts FROM comment WHERE id_picture = ?",
+            [$pictureId]
+        )->counts;
+    }
 }

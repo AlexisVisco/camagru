@@ -1,6 +1,7 @@
 <?php
 
-class Like extends Storage {
+class Like extends Storage
+{
 
     private $id_picture;
     private $id_user;
@@ -11,7 +12,8 @@ class Like extends Storage {
         parent::__construct();
     }
 
-    public function init($id_picture, $id_user) {
+    public function init($id_picture, $id_user)
+    {
         $this->id_user = $id_user;
         $this->id_picture = $id_picture;
         $this->date = date('Y-m-d H:i:s');
@@ -19,14 +21,14 @@ class Like extends Storage {
 
     function update()
     {
-        return ;
+        return;
     }
 
     function save()
     {
         return $this->database->q(
         /** @lang MySQL */
-            "INSERT INTO like VALUES (?, ?, ?)",
+            "INSERT INTO `like` VALUES (?, ?, ?)",
             array_slice(array_values((array)$this), 0, 3)
         )->errorCode();
     }
@@ -35,7 +37,7 @@ class Like extends Storage {
     {
         return $this->database->q(
         /** @lang MySQL */
-            "DELETE FROM like WHERE id_picture = ? AND id_user = ?",
+            "DELETE FROM `like` WHERE id_picture = ? AND id_user = ?",
             [$this->id_picture, $this->id_user]
         )->errorCode();
     }
@@ -49,12 +51,39 @@ class Like extends Storage {
     {
         return $this->database->tc(__CLASS__,
             /** @lang MySQL */
-            "SELECT * FROM like WHERE $field = ?", [$val]
+            "SELECT * FROM `like` WHERE $field = ?", [$val]
         );
     }
 
     function exist($field, $value): bool
     {
         return $this->loadWhere($field, $value) != NULL;
+    }
+
+    function loadLike($userId, $pictureId)
+    {
+        return $this->database->tc(__CLASS__,
+            /** @lang MySQL */
+            "SELECT * FROM `like` WHERE id_picture = ? AND id_user = ?", [$pictureId, $userId]
+        );
+    }
+
+    static function likes($pictureId)
+    {
+        $d = new Database();
+        return (int)$d->ta(
+        /** @lang MySQL */
+            "SELECT count(*) AS counts FROM `like` WHERE id_picture = ?",
+            [$pictureId]
+        )->counts;
+    }
+
+    static function hasLike($userId, $pictureId) {
+        $d = new Database();
+        return ((int)$d->ta(
+        /** @lang MySQL */
+            "SELECT count(*) AS counts FROM `like` WHERE id_picture = ? AND id_user = ?",
+            [$pictureId, $userId]
+        )->counts) == 1;
     }
 }

@@ -46,7 +46,7 @@ $user = User::getUser();
 </head>
 
 <body>
-<section class="hero is-fullheight is-default is-bold">
+<section class="hero <?php echo isset($fullheight) ? $fullheight : "" ?> is-default is-bold">
     <div class="hero-head">
         <nav class="navbar">
             <div class="container">

@@ -11,7 +11,9 @@ class PictureController extends BaseController
     {
         if (!isset($_SESSION["user"])) $this->redirect("/" . Routes::$USER_LOGIN);
         else if (count($_POST) != 0) $this->postMountPicture();
-        else echo self::render("add_picture");
+        else {
+            echo self::render("add_picture", ["fullheight" => "is-fullheight"]);
+        }
     }
 
 
@@ -22,9 +24,9 @@ class PictureController extends BaseController
             Messages::shouldEnsure($ensure);
             echo self::render("add_picture");
         } else {
-            $raw =  str_replace("data:image/png;base64,", "", $_POST["raw"]);
+            $raw = str_replace("data:image/png;base64,", "", $_POST["raw"]);
             $decodedRaw = base64_decode($raw);
-            $size = strlen($raw)/1.37; // in bytes
+            $size = strlen($raw) / 1.37; // in bytes
 
             if ($size > $this->max_file_size) {
                 Messages::pictureUploadInvalidSize();
@@ -59,7 +61,7 @@ class PictureController extends BaseController
                 imagecopymerge($img, $alpha,
                     (imagesx($img) / 2) - (imagesx($alpha) / 2) + ($compositionOpt["desc"]["dw"]),
                     (imagesy($img) / 2) - (imagesy($alpha) / 2) + ($compositionOpt["desc"]["dh"]),
-                    0, 0,  200, 200, 100);
+                    0, 0, 200, 200, 100);
                 imagepng($img, $filename);
                 imagedestroy($img);
                 imagedestroy($alpha);
@@ -131,8 +133,34 @@ class PictureController extends BaseController
     }
 
 
-    function gallery() {
-        var_dump(Picture::pictures(0, 9));
-        echo self::render("gallery");
+    function gallery()
+    {
+        $pictures = Picture::pictures(0, 9);
+        foreach ($pictures as $picture) {
+            $user = new User();
+            $picture->likes = Like::likes($picture->id);
+            $picture->hasLike = isset($_SESSION["user"]) ? Like::hasLike(json_decode($_SESSION["user"])->id, $picture->id) : false;
+            $picture->comments = Comment::comments($picture->id);
+            $picture->user = $user->load($picture->id_user);
+        }
+        echo self::render("gallery", ["pictures" => $pictures]);
+    }
+
+    function like($pictureId)
+    {
+        if (!isset($_SESSION["user"])) $this->redirect("/" . Routes::$USER_LOGIN);
+        $user = json_decode($_SESSION["user"]);
+        $hasLiked = Like::hasLike($user->id, $pictureId);
+        if ($hasLiked) {
+            $like = new Like();
+            $like = $like->loadLike($user->id, $pictureId);
+            $like->delete();
+            $this->redirect("/" . Routes::$PICTURE_GALLERY);
+        } else {
+            $like = new Like();
+            $like->init($pictureId, $user->id);
+            $like->save();
+            $this->redirect("/" . Routes::$PICTURE_GALLERY);
+        }
     }
 }
