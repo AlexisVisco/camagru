@@ -140,7 +140,7 @@ class PictureController extends BaseController
             $user = new User();
             $picture->likes = Like::likes($picture->id);
             $picture->hasLike = isset($_SESSION["user"]) ? Like::hasLike(json_decode($_SESSION["user"])->id, $picture->id) : false;
-            $picture->comments = Comment::comments($picture->id);
+            $picture->comments = Comment::countComments($picture->id);
             $picture->user = $user->load($picture->id_user);
         }
         echo self::render("gallery", ["pictures" => $pictures]);
@@ -149,6 +149,11 @@ class PictureController extends BaseController
     function like($pictureId)
     {
         if (!isset($_SESSION["user"])) $this->redirect("/" . Routes::$USER_LOGIN);
+        $picture = new Picture();
+        $picture = $picture->loadWhere("id", $pictureId);
+        if ($picture == null) {
+            self::redirect("/" . Routes::$PICTURE_GALLERY);
+        }
         $user = json_decode($_SESSION["user"]);
         $hasLiked = Like::hasLike($user->id, $pictureId);
         if ($hasLiked) {
@@ -162,5 +167,27 @@ class PictureController extends BaseController
             $like->save();
             $this->redirect("/" . Routes::$PICTURE_GALLERY);
         }
+    }
+
+    function picture($pictureId)
+    {
+        $picture = new Picture();
+        $picture = $picture->loadWhere("id", $pictureId);
+        if ($picture == null) {
+            self::redirect("/" . Routes::$PICTURE_GALLERY);
+        }
+        $user = new User();
+        $picture->likes = Like::likes($picture->id);
+        $picture->hasLike = isset($_SESSION["user"]) ? Like::hasLike(json_decode($_SESSION["user"])->id, $picture->id) : false;
+        $picture->comments = Comment::countComments($picture->id);
+        $picture->user = $user->load($picture->id_user);
+
+        $comments = Comment::comments($pictureId);
+        $comments = $comments != null ? $comments : [];
+        foreach ($comments as $comment) {
+            $user = new User();
+            $comment->user = $user->load($comment->id_user);
+        }
+        echo self::render("picture", ["picture" => $picture, "comments" => $comments]);
     }
 }

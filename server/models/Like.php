@@ -3,9 +3,9 @@
 class Like extends Storage
 {
 
-    private $id_picture;
-    private $id_user;
-    private $date;
+    public $id_picture;
+    public $id_user;
+    public $date;
 
     public function __construct()
     {

@@ -2,11 +2,11 @@
 
 class Comment extends Storage {
 
-    private $id;
-    private $id_picture;
-    private $id_user;
-    private $body;
-    private $date;
+    public $id;
+    public $id_picture;
+    public $id_user;
+    public $body;
+    public $date;
 
     public function __construct()
     {
@@ -62,7 +62,7 @@ class Comment extends Storage {
         return $this->loadWhere($field, $value) != NULL;
     }
 
-    static function comments($pictureId)
+    static function countComments($pictureId)
     {
         $d = new Database();
         return (int)$d->ta(
@@ -70,5 +70,15 @@ class Comment extends Storage {
             "SELECT count(*) AS counts FROM comment WHERE id_picture = ?",
             [$pictureId]
         )->counts;
+    }
+
+    static function comments($pictureId)
+    {
+        $d = new Database();
+        return $d->lst(
+        /** @lang MySQL */
+            "SELECT * FROM comment WHERE id_picture = ? ORDER BY date DESC",
+            [$pictureId]
+        );
     }
 }

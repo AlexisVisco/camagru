@@ -8,7 +8,7 @@
             foreach ($pictures as $picture) { ?>
                 <div class="column is-one-third">
                     <div class="card large round">
-                        <div class="card-image ">
+                        <div onclick="picture('<?php echo $picture->id ?>')" class="card-image ">
                             <figure style="cursor: pointer" class="image">
                                 <img src="<?php echo $picture->data ?>">
                             </figure>
@@ -35,7 +35,6 @@
                 </div>
             <?php } ?>
         </div>
-        <!-- End Staff -->
     </div>
 </div>
 
@@ -48,5 +47,9 @@
 <script>
     function heart(id) {
         window.location.href = `/like/${id}/`;
+    }
+
+    function picture(id) {
+        window.location.href = `/photo/${id}/`;
     }
 </script>

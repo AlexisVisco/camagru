@@ -3,10 +3,10 @@
 class Picture extends Storage
 {
 
-    private $id;
-    private $id_user;
-    private $data;
-    private $date;
+    public $id;
+    public $id_user;
+    public $data;
+    public $date;
 
 
     public function __construct()
@@ -69,7 +69,7 @@ class Picture extends Storage
         $d = new Database();
         return $d->lst(
         /** @lang MySQL */
-            "SELECT * FROM `picture` ORDER BY date LIMIT $amountPage OFFSET $offset"
+            "SELECT * FROM `picture` ORDER BY date DESC LIMIT $amountPage OFFSET $offset"
         );
     }
 }
