@@ -32,20 +32,10 @@ class PictureController extends BaseController
                 Messages::pictureUploadInvalidSize();
                 $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
             }
-
-            $img = imagecreatefromstring($decodedRaw);
-            if ($img == false) {
-                Messages::pictureUploadError();
-                $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
-            }
-
-            $filename = Storage::uuid() . '.png';
-            imagepng($img, $filename);
             if ($_POST["has_composition"] == "true") {
                 $compositionOpt = json_decode($_POST["composition_img"], true);
                 $ensureComp = $this->ensureArr($compositionOpt, ["location", "desc"]);
                 if (count($ensureComp) != 0) {
-                    unlink($filename);
                     Messages::pictureUploadError();
                     $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
                 } else {
@@ -55,31 +45,46 @@ class PictureController extends BaseController
                         $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
                     }
                 }
-                $alpha = imagecreatefrompng(ROOT . $compositionOpt["location"]);
+                try {
+                    $alpha = new Imagick();
+                    if (false === $alpha->readImage(ROOT . $compositionOpt["location"])) throw new Exception("can't read alpha");
 
+                    $face = new Imagick();
+                    if (false === $face->readImageBlob($decodedRaw)) throw new Exception("can't read webcam image");
 
-                imagecopymerge($img, $alpha,
-                    (imagesx($img) / 2) - (imagesx($alpha) / 2) + ($compositionOpt["desc"]["dw"]),
-                    (imagesy($img) / 2) - (imagesy($alpha) / 2) + ($compositionOpt["desc"]["dh"]),
-                    0, 0, 200, 200, 100);
-                imagepng($img, $filename);
-                imagedestroy($img);
-                imagedestroy($alpha);
+                    if (false === $face->compositeImage($alpha, Imagick::COMPOSITE_DEFAULT,
+                            ($face->getImageWidth()/2) - ($alpha->getImageWidth()/2) + ($compositionOpt["desc"]["dw"]),
+                            ($face->getImageHeight()/2) - ($alpha->getImageHeight()/2) + ($compositionOpt["desc"]["dh"])
+                    ))
+                        throw new Exception("can't merge two images");
 
-                $type = pathinfo($filename, PATHINFO_EXTENSION);
-                $data = file_get_contents($filename);
-                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                unlink($filename);
-
-                $user = json_decode($_SESSION["user"]);
-                $pic = new Picture();
-                $pic->init($user->id, $base64);
-                $pic->save();
-
-                Messages::pictureUploadSuccess();
-                $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
+                    $user = json_decode($_SESSION["user"]);
+                    $pic = new Picture();
+                    $pic->init($user->id, 'data:image/jpg;base64,'.base64_encode($face->getImageBlob()));
+                    $pic->save();
+                    Messages::pictureUploadSuccess();
+                    $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
+                } catch (Exception $e) {
+                    $fm = new FlashMessage("Impossible de faire le traitement.", FlashType::$ERROR);
+                    $fm->register();
+                    $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
+                }
             } else {
+                try {
+                    $face = new Imagick();
+                    if (false === $face->readImageBlob($decodedRaw)) throw new Exception("can't read webcam image");
 
+                    $user = json_decode($_SESSION["user"]);
+                    $pic = new Picture();
+                    $pic->init($user->id, 'data:image/jpg;base64,'.base64_encode($face->getImageBlob()));
+                    $pic->save();
+                    Messages::pictureUploadSuccess();
+                    $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
+                } catch (Exception $e) {
+                    $fm = new FlashMessage("Impossible de faire le traitement.", FlashType::$ERROR);
+                    $fm->register();
+                    $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
+                }
             }
         }
     }
