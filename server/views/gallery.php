@@ -36,8 +36,8 @@
             <?php } ?>
         </div>
         <div class="columns is-center">
-            <a class="pagination-previous">Previous</a>
-            <a class="pagination-next">Next page</a>
+            <a href="/<?php echo Routes::$PICTURE_GALLERY ?>?page=<?php echo $page - 1 >= 0 ? $page - 1 : 0?>" class="pagination-previous <?php echo $page - 1 < 0 ? 'disabled' : '' ?>">Previous</a>
+            <a href="/<?php echo Routes::$PICTURE_GALLERY ?>?page=<?php echo $page + 1?>" class="pagination-next">Next page</a>
         </div>
     </div>
 </div>

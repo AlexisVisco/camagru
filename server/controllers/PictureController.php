@@ -66,9 +66,10 @@ class PictureController extends BaseController
                     Messages::pictureUploadSuccess();
                     $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
                 } catch (Exception $e) {
-                    $fm = new FlashMessage("Impossible de faire le traitement.", FlashType::$ERROR);
-                    $fm->register();
-                    $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
+                    var_dump($e->getMessage());
+                    //$fm = new FlashMessage("Impossible de faire le traitement.", FlashType::$ERROR);
+                    //$fm->register();
+                    //$this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
                 }
             } else {
                 try {
@@ -82,9 +83,10 @@ class PictureController extends BaseController
                     Messages::pictureUploadSuccess();
                     $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
                 } catch (Exception $e) {
-                    $fm = new FlashMessage("Impossible de faire le traitement.", FlashType::$ERROR);
-                    $fm->register();
-                    $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
+                    var_dump($e->getMessage());
+                    //$fm = new FlashMessage("Impossible de faire le traitement.", FlashType::$ERROR);
+                    //$fm->register();
+                    //$this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
                 }
             }
         }
@@ -142,7 +144,8 @@ class PictureController extends BaseController
     function gallery()
     {
         $page = 0;
-        if (isset($_GET["page"])) $page = $_GET["page"];
+        if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] >= 0)
+            $page = $_GET["page"];
         $pictures = Picture::pictures($page, 9);
         foreach ($pictures as $picture) {
             $user = new User();
@@ -151,7 +154,7 @@ class PictureController extends BaseController
             $picture->comments = Comment::countComments($picture->id);
             $picture->user = $user->load($picture->id_user);
         }
-        echo self::render("gallery", ["pictures" => $pictures]);
+        echo self::render("gallery", ["pictures" => $pictures, "page" => $page]);
     }
 
     function like($pictureId)
