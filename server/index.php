@@ -21,8 +21,6 @@ Camagru\Models\Autoloader::register();
 Camagru\Util\Autoloader::register();
 Camagru\Forms\Autoloader::register();
 
-var_dump($_REQUEST);
-
 $router = Router::getInstance();
 
 $router
