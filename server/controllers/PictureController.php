@@ -25,6 +25,7 @@ class PictureController extends BaseController
             echo self::render("add_picture");
         } else {
             $raw = str_replace("data:image/png;base64,", "", $_POST["raw"]);
+            $raw = str_replace("data:image/;base64,", "", $raw);
             $decodedRaw = base64_decode($raw);
             $size = strlen($raw) / 1.37; // in bytes
 
