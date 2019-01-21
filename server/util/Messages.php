@@ -126,4 +126,14 @@ class Messages
         $fm = new FlashMessage("La photo a bien été créée.", FlashType::$SUCCESS);
         $fm->register();
     }
+
+    public static function pictureCommentLength() {
+        $fm = new FlashMessage("La longueur du commentaire est invalide. Max 1000 caractères.", FlashType::$ERROR);
+        $fm->register();
+    }
+
+    public static function pictureCommentSuccess() {
+        $fm = new FlashMessage("Votre commentaire a été posté !", FlashType::$SUCCESS);
+        $fm->register();
+    }
 }

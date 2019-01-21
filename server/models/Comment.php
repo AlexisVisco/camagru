@@ -30,8 +30,8 @@ class Comment extends Storage {
     {
         return $this->database->q(
         /** @lang MySQL */
-            "INSERT INTO comment VALUES (?, ?, ?, ?)",
-            array_slice(array_values((array)$this), 0, 4)
+            "INSERT INTO comment VALUES (?, ?, ?, ?, ?)",
+            array_slice(array_values((array)$this), 0, 5)
         )->errorCode();
     }
 

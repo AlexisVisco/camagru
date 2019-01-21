@@ -169,6 +169,27 @@ class PictureController extends BaseController
         }
     }
 
+    function comment($pictureId)
+    {
+        if (count($_POST) == 0 || !isset($_SESSION["user"])) $this->redirect("/photo/" . $pictureId . "/");
+        $picture = new Picture();
+        $picture = $picture->loadWhere("id", $pictureId);
+        if ($picture == null) {
+            $this->redirect("/photo/" . $pictureId . "/");
+        }
+        $user = json_decode($_SESSION["user"]);
+        $ensure = self::ensure(["body"]);
+        if (count($ensure) != 0) Messages::shouldEnsure($ensure);
+        $formComment = new PictureComment($_POST);
+        if (!$formComment->validate()) $this->redirect("/photo/" . $pictureId . "/");
+
+        $comment = new Comment();
+        $comment->init($pictureId, $user->id, $_POST["body"]);
+        $comment->save();
+        Messages::pictureCommentSuccess();
+        $this->redirect("/photo/" . $pictureId . "/");
+    }
+
     function picture($pictureId)
     {
         $picture = new Picture();

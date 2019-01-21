@@ -16,11 +16,12 @@
                     <div class="media-content">
                         <div style="display: flex">
                             <p style="display: inline; align-self: flex-start"><span class="title is-6"><a
-                                        style="cursor: text">@<?php echo $picture->user->username ?></a></span>
+                                            style="cursor: text">@<?php echo $picture->user->username ?></a></span>
                             </p>
                             <div style="margin-left: auto">
                                 <p style="font-weight: bolder; display: inline; padding-right: 2px"><?php echo $picture->likes ?></p>
-                                <i style="padding-right: 50px; cursor: pointer; <?php echo $picture->hasLike ? "color: #ff3351;" : "" ?>" class="heart <?php echo $picture->hasLike ? "fa" : "far" ?> fa-heart"
+                                <i style="padding-right: 50px; cursor: pointer; <?php echo $picture->hasLike ? "color: #ff3351;" : "" ?>"
+                                   class="heart <?php echo $picture->hasLike ? "fa" : "far" ?> fa-heart"
                                    onclick="heart('<?php echo $picture->id ?>')"
                                 ></i>
                                 <p style="font-weight: bolder; display: inline; padding-right: 2px"><?php echo $picture->comments ?></p>
@@ -29,13 +30,15 @@
                         </div>
                     </div>
                 </div>
+                <?php FlashMessage::html() ?>
                 <?php if (isset($_SESSION["user"])) { ?>
-                    <article class="media">
-                        <form action="" method="post"></form>
+                    <article style="display: block" class="media">
+                        <form action="/comment/<?php echo $picture->id ?>/" method="post">
                         <div class="media-content">
                             <div class="field">
                                 <p class="control">
-                                    <textarea class="textarea" placeholder="Add a comment..."></textarea>
+                                    <textarea class="textarea" name="body"
+                                              placeholder="Écris ton commentaire"></textarea>
                                 </p>
                             </div>
                             <div class="field">
@@ -44,22 +47,22 @@
                                 </p>
                             </div>
                         </div>
+                        </form>
                     </article>
                 <?php } ?>
                 <?php foreach ($comments as $comment) { ?>
-                <article class="media">
-                    <div class="media-content">
-                        <div class="content">
-                            <p>
-                                <strong><?php echo $comment->user->username ?></strong>
-                                <br>
-                                <?php echo $comment->body ?>
-                                <br>
-                                <small><i style="margin-right: 10px" class="fa fa-calendar"></i> <?php echo $comment->date ?></small>
-                            </p>
+                    <article class="media">
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <strong><?php echo $comment->user->username ?></strong>
+                                <p style="margin: 10px 0px"><?php echo $comment->body ?></p>
+                                <small><i style="margin-right: 10px"
+                                          class="fa fa-calendar"></i> <?php echo $comment->date ?></small>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
                 <?php } ?>
             </div>
         </div>

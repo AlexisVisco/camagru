@@ -12,6 +12,7 @@ class Routes {
     public static $USER_CHANGE_PWD = "changer-de-mot-de-passe/(.+)/(.+)/";
 
     public static $PICTURE_LIKE = "like/(.+)/";
+    public static $PICTURE_COMMENT = "comment/(.+)/";
     public static $PICTURE_DESC = "photo/(.+)/";
     public static $PICTURE_ADD_PHOTO = "ajouter-une-photo/";
     public static $PICTURE_ADD_PHOTO_UPLOAD = "ajouter-une-photo/depuis-mon-pc/";
