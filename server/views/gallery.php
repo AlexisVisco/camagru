@@ -35,6 +35,10 @@
                 </div>
             <?php } ?>
         </div>
+        <div class="columns is-center">
+            <a class="pagination-previous">Previous</a>
+            <a class="pagination-next">Next page</a>
+        </div>
     </div>
 </div>
 

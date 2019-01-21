@@ -141,7 +141,9 @@ class PictureController extends BaseController
 
     function gallery()
     {
-        $pictures = Picture::pictures(0, 9);
+        $page = 0;
+        if (isset($_GET["page"])) $page = $_GET["page"];
+        $pictures = Picture::pictures($page, 9);
         foreach ($pictures as $picture) {
             $user = new User();
             $picture->likes = Like::likes($picture->id);

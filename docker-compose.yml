@@ -8,6 +8,7 @@ services:
             - ./server:/var/www/html/
         links:
             - db
+            - mailhog:mailhog
         networks:
             - default
     db:
@@ -33,6 +34,11 @@ services:
         environment:
             MYSQL_USER: user
             MYSQL_PASSWORD: test
-            MYSQL_ROOT_PASSWORD: test 
+            MYSQL_ROOT_PASSWORD: test
+    mailhog:
+        image: mailhog/mailhog
+        ports:
+          - 1025:1025
+          - 8025:8025
 volumes:
     persistent:
