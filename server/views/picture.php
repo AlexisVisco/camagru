@@ -68,3 +68,10 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    function heart(id) {
+        window.location.href = `/like/${id}/?redirect=/photo/${id}/`;
+    }
+</script>

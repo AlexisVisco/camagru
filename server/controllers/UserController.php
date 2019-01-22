@@ -7,25 +7,30 @@ class UserController extends BaseController
     public function register()
     {
         if (count($_POST) != 0) $this->postRegister();
-        echo self::render("register");
+        echo self::render("register", ["fullheight" => "is-fullheight"]);
     }
 
     public function forgotPwd()
     {
         if (count($_POST) != 0) $this->postForgotPwd();
-        echo self::render("forgot_password");
+        echo self::render("forgot_password", ["fullheight" => "is-fullheight"]);
     }
 
     public function changePwd($id, $token)
     {
         if (count($_POST) != 0) $this->postChangePwd($id, $token);
-        echo self::render("change_password");
+        echo self::render("change_password", ["fullheight" => "is-fullheight"]);
     }
 
     public function login()
     {
         if (count($_POST) != 0) $this->postLogin();
-        echo self::render("login");
+        echo self::render("login", ["fullheight" => "is-fullheight"]);
+    }
+
+    public function settings()
+    {
+        echo self::render("settings", ["fullheight" => "is-fullheight"]);
     }
 
     public function logout()
@@ -33,6 +38,8 @@ class UserController extends BaseController
         User::logout();
         $this->redirect("/");
     }
+
+
 
     public function confirm($id, $token)
     {

@@ -3,9 +3,9 @@
 class BaseController
 {
 
-    public function redirect($url)
+    public function redirect($url, $force = false)
     {
-        if (isset($_GET["redirect"])) $url = $_GET["redirect"];
+        if (!$force && isset($_GET["redirect"])) $url = $_GET["redirect"];
         header("Location:$url");
         exit;
     }

@@ -37,6 +37,7 @@ $router
     ->addRoute(Routes::$USER_LOGOUT,                "UserController@logout",                  RouteOrder::$ROUTE)
     ->addRoute(Routes::$USER_FORGOT_PWD,            "UserController@forgotPwd",               RouteOrder::$ROUTE)
     ->addRoute(Routes::$USER_CHANGE_PWD,            "UserController@changePwd",               RouteOrder::$ROUTE)
+    ->addRoute(Routes::$USER_SETTINGS,              "UserController@settings",               RouteOrder::$ROUTE)
 
     // PICTURE ROUTES
     //
@@ -45,7 +46,9 @@ $router
     ->addRoute(Routes::$PICTURE_GALLERY,            "PictureController@gallery",              RouteOrder::$ROUTE)
     ->addRoute(Routes::$PICTURE_LIKE,               "PictureController@like",                 RouteOrder::$ROUTE)
     ->addRoute(Routes::$PICTURE_COMMENT,            "PictureController@comment",              RouteOrder::$ROUTE)
+    ->addRoute(Routes::$PICTURE_DELETE,             "PictureController@delete",               RouteOrder::$ROUTE)
     ->addRoute(Routes::$PICTURE_DESC,               "PictureController@picture",              RouteOrder::$ROUTE)
+    ->addRoute(Routes::$PICTURE_MY_PICTURES,        "PictureController@myPictures",           RouteOrder::$ROUTE)
 
     // 404 NOT FOUND
     //

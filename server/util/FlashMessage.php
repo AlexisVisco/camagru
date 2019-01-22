@@ -35,7 +35,7 @@ class FlashMessage
     }
 
     public static function hasFlash() {
-        return $_SESSION["flash_message"] != NULL;
+        return isset($_SESSION["flash_message"]) && $_SESSION["flash_message"] != NULL;
     }
 
     public static function html() {

@@ -13,11 +13,10 @@ __User__
 __Gallery__
 
 - [x] Doit etre publique
-- [ ] Afficher (avec pagination) l'integralité des publications (par date de création)
+- [X] Afficher (avec pagination) l'integralité des publications (par date de création)
 - [x] Doit pouvoir etre commenté/liké par les utilisateurs connectés
 - [ ] Email lorqu'un utilisateur commente une image (email vers l'auteur)
 - [ ] ^ Réglable en paramètre
-- [ ] Liste des images paginés
 
  __Montage__
  
@@ -25,4 +24,4 @@ __Gallery__
 - [x] Possibilité d'upload une image
 - [x] Liste des photos précédements prises
 - [x] La superposition des images doit etre fait coté PHP :'(
-- [ ] Doit pouvoir supprimer ses montages  
+- [X] Doit pouvoir supprimer ses montages  

@@ -78,12 +78,23 @@ class Like extends Storage
         )->counts;
     }
 
-    static function hasLike($userId, $pictureId) {
+    static function hasLike($userId, $pictureId)
+    {
         $d = new Database();
         return ((int)$d->ta(
+            /** @lang MySQL */
+                "SELECT count(*) AS counts FROM `like` WHERE id_picture = ? AND id_user = ?",
+                [$pictureId, $userId]
+            )->counts) == 1;
+    }
+
+    static function deleteAll($id_picture)
+    {
+        $d = new Database();
+        $d->q(
         /** @lang MySQL */
-            "SELECT count(*) AS counts FROM `like` WHERE id_picture = ? AND id_user = ?",
-            [$pictureId, $userId]
-        )->counts) == 1;
+            "DELETE FROM `like` WHERE id_picture = ?",
+            [$id_picture]
+        );
     }
 }

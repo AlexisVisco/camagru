@@ -72,4 +72,42 @@ class Picture extends Storage
             "SELECT * FROM `picture` ORDER BY date DESC LIMIT $amountPage OFFSET $offset"
         );
     }
+
+    static function countPictures()
+    {
+        $d = new Database();
+        return (int)$d->ta(
+        /** @lang MySQL */
+            "SELECT count(*) AS counts FROM `picture`"
+        )->counts;
+    }
+
+    function loadWhereIdAndUserId($id, $user_id)
+    {
+        return $this->database->tc(__CLASS__,
+            /** @lang MySQL */
+            "SELECT * FROM picture WHERE id = ? AND id_user = ?", [$id, $user_id]
+        );
+    }
+
+    static function picturesWhere($user_id, $currentPage, $amountPage)
+    {
+        $offset = $currentPage * $amountPage;
+        $d = new Database();
+        return $d->lst(
+        /** @lang MySQL */
+            "SELECT * FROM `picture` WHERE id_user=? ORDER BY date DESC LIMIT $amountPage OFFSET $offset",
+            [$user_id]
+        );
+    }
+
+    static function countPicturesWhere($user_id)
+    {
+        $d = new Database();
+        return (int)$d->ta(
+        /** @lang MySQL */
+            "SELECT count(*) AS counts FROM `picture` WHERE id_user=?",
+            [$user_id]
+        )->counts;
+    }
 }

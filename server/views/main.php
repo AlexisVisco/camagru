@@ -73,9 +73,9 @@ $user = User::getUser();
                                    class="button is-primary">Se connecter</a>
                             </ul>
                             <?php } else { ?>
-                                <li><a href="/">Paramètres</a></li>
-                                <li><a href="/">Ma page</a></li>
                                 <li><a href="/<?php echo Routes::$PICTURE_ADD_PHOTO ?>">Ajouter une photo</a></li>
+                                <li><a href="/<?php echo Routes::$PICTURE_MY_PICTURES ?>">Mes photos</a></li>
+                                <li><a href="/<?php echo Routes::$USER_SETTINGS ?>">Paramètres</a></li>
                                 <li><a href="/<?php echo Routes::$USER_LOGOUT ?>">Se deconnecter</a></li>
                             <?php } ?>
                         </div>

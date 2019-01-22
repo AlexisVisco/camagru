@@ -9,7 +9,7 @@ class PictureController extends BaseController
 
     function addPicture()
     {
-        if (!isset($_SESSION["user"])) $this->redirect("/" . Routes::$USER_LOGIN);
+        if (!isset($_SESSION["user"])) $this->redirect("/" . Routes::$USER_LOGIN, true);
         else if (count($_POST) != 0) $this->postMountPicture();
         else {
             echo self::render("add_picture", ["fullheight" => "is-fullheight"]);
@@ -154,12 +154,45 @@ class PictureController extends BaseController
             $picture->comments = Comment::countComments($picture->id);
             $picture->user = $user->load($picture->id_user);
         }
-        echo self::render("gallery", ["pictures" => $pictures, "page" => $page]);
+        $amount = Picture::countPictures();
+        echo self::render("gallery", ["pictures" => $pictures, "page" => $page, "maxPage" => $amount/9]);
+    }
+
+    function myPictures()
+    {
+        if (!isset($_SESSION["user"])) $this->redirect("/" . Routes::$USER_LOGIN, true);
+        $user = json_decode($_SESSION["user"]);
+        $page = 0;
+        if (isset($_GET["page"]) && is_numeric($_GET["page"]) && $_GET["page"] >= 0)
+            $page = $_GET["page"];
+        $pictures = Picture::picturesWhere($user->id, $page, 12);
+        foreach ($pictures as $picture) {
+            $picture->likes = Like::likes($picture->id);
+            $picture->hasLike = Like::hasLike($user->id, $picture->id);
+            $picture->comments = Comment::countComments($picture->id);
+            $picture->user = $user;
+        }
+        $amount = Picture::countPicturesWhere($user->id);
+        echo self::render("my-pictures", ["pictures" => $pictures, "page" => $page, "maxPage" => $amount/12]);
+    }
+
+    function delete($id) {
+        if (!isset($_SESSION["user"])) $this->redirect("/" . Routes::$USER_LOGIN, true);
+        $user = json_decode($_SESSION["user"]);
+        $pic = new Picture();
+        /** @var Picture $pic */
+        $pic = $pic->loadWhereIdAndUserId($id, $user->id);
+        if ($pic == NULL) $this->redirect("/" . Routes::$PICTURE_MY_PICTURES);
+        $pic->delete();
+        Like::deleteAll($id);
+        Comment::deleteAll($id);
+        Messages::pictureDeleted();
+        $this->redirect("/" . Routes::$PICTURE_MY_PICTURES);
     }
 
     function like($pictureId)
     {
-        if (!isset($_SESSION["user"])) $this->redirect("/" . Routes::$USER_LOGIN);
+        if (!isset($_SESSION["user"])) $this->redirect("/" . Routes::$USER_LOGIN, true);
         $picture = new Picture();
         $picture = $picture->loadWhere("id", $pictureId);
         if ($picture == null) {

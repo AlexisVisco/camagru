@@ -3,6 +3,10 @@
         <span class="flow-1"></span>
     </div>
     <div class="section">
+        <div>
+            <?php FlashMessage::html() ?>
+            <br>
+        </div>
         <div class="row columns is-multiline">
             <?php
             foreach ($pictures as $picture) { ?>
@@ -18,15 +22,14 @@
                         <div class="media-content">
                             <div style="display: flex">
                                 <p style="display: inline; align-self: flex-start"><span class="title is-6"><a
-                                                style="cursor: text">@<?php echo $picture->user->username ?></a></span>
+                                            style="cursor: text">@<?php echo $picture->user->username ?></a></span>
                                 </p>
                                 <div style="margin-left: auto">
                                     <p style="font-weight: bolder; display: inline; padding-right: 2px"><?php echo $picture->likes ?></p>
-                                    <i style="padding-right: 50px; cursor: pointer; <?php echo $picture->hasLike ? "color: #ff3351;" : "" ?>" class="heart <?php echo $picture->hasLike ? "fa" : "far" ?> fa-heart"
-                                    onclick="heart('<?php echo $picture->id ?>')"
-                                    ></i>
+                                    <i style="padding-right: 30px; cursor: pointer;" class="far fa-heart"></i>
                                     <p style="font-weight: bolder; display: inline; padding-right: 2px"><?php echo $picture->comments ?></p>
-                                    <i style="" class="far fa-comment"></i>
+                                    <i style="padding-right: 30px;" class="far fa-comment"></i>
+                                    <i style="cursor: pointer; color: red" class="far fa-trash-alt" onclick="deletePicture('<?php echo $picture->id ?>')"></i>
                                 </div>
 
                             </div>
@@ -40,29 +43,22 @@
             <?php if ($page - 1 < 0) { ?>
                 <a class="pagination-next" disabled>Page précédente</a>
             <?php } else  {?>
-            <a href="/<?php echo Routes::$PICTURE_GALLERY ?>?page=<?php echo $page - 1?>" class="pagination-next">Page précédente</a>
+                <a href="/<?php echo Routes::$PICTURE_MY_PICTURES ?>?page=<?php echo $page - 1?>" class="pagination-next">Page précédente</a>
             <?php }
 
             if ($page + 1 > $maxPage) { ?>
-            <a class="pagination-next" disabled>Page suivante</a>
+                <a class="pagination-next" disabled>Page suivante</a>
             <?php } else  {?>
-            <a href="/<?php echo Routes::$PICTURE_GALLERY ?>?page=<?php echo $page + 1?>" class="pagination-next">Page suivante</a>
+                <a href="/<?php echo Routes::$PICTURE_MY_PICTURES ?>?page=<?php echo $page + 1?>" class="pagination-next">Page suivante</a>
             <?php } ?>
         </div>
     </div>
 </div>
 
-<style>
-    .heart:hover {
-        color: #ff3351;
-    }
-</style>
-
 <script>
-    function heart(id) {
-        window.location.href = `/like/${id}/`;
+    function deletePicture(id) {
+        window.location.href = `/supprimer-photo/${id}/`;
     }
-
     function picture(id) {
         window.location.href = `/photo/${id}/`;
     }

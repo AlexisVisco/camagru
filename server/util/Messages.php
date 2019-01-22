@@ -136,4 +136,9 @@ class Messages
         $fm = new FlashMessage("Votre commentaire a été posté !", FlashType::$SUCCESS);
         $fm->register();
     }
+
+    public static function pictureDeleted() {
+        $fm = new FlashMessage("La photo a été supprimé !", FlashType::$SUCCESS);
+        $fm->register();
+    }
 }

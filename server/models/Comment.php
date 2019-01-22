@@ -1,6 +1,7 @@
 <?php
 
-class Comment extends Storage {
+class Comment extends Storage
+{
 
     public $id;
     public $id_picture;
@@ -13,7 +14,9 @@ class Comment extends Storage {
         parent::__construct();
     }
 
-    public function init($id_picture, $id_user, $body) {
+
+    public function init($id_picture, $id_user, $body)
+    {
         $this->id = self::uuid();
         $this->id_picture = $id_picture;
         $this->id_user = $id_user;
@@ -23,7 +26,7 @@ class Comment extends Storage {
 
     function update()
     {
-        return ;
+        return;
     }
 
     function save()
@@ -79,6 +82,16 @@ class Comment extends Storage {
         /** @lang MySQL */
             "SELECT * FROM comment WHERE id_picture = ? ORDER BY date DESC",
             [$pictureId]
+        );
+    }
+
+    public static function deleteAll($id)
+    {
+        $d = new Database();
+        $d->q(
+        /** @lang MySQL */
+            "DELETE FROM comment WHERE id = ?",
+            [$id]
         );
     }
 }
