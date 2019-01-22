@@ -65,9 +65,20 @@ class User extends Storage
         return $this->database->q(
         /** @lang MySQL */
             "UPDATE user
-            SET id=?, username=?, email=?, password=?, confirmed=?, notified=?
+            SET username=?, email=?, confirmed=?, notified=?
             WHERE id='$this->id'",
-            array_slice(array_values((array)$this), 0, 6)
+            [$this->username, $this->email, $this->confirmed, $this->notified]
+        )->errorCode();
+    }
+
+    public function updateWithPassword()
+    {
+        return $this->database->q(
+        /** @lang MySQL */
+            "UPDATE user
+            SET username=?, email=?, confirmed=?, notified=? password=?
+            WHERE id='$this->id'",
+            [$this->username, $this->email, $this->confirmed, $this->notified, $this->password]
         )->errorCode();
     }
 

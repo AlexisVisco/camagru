@@ -30,6 +30,7 @@ class UserController extends BaseController
 
     public function settings()
     {
+        if (count($_POST) != 0) $this->postSettings();
         echo self::render("settings", ["fullheight" => "is-fullheight"]);
     }
 
@@ -144,6 +145,35 @@ class UserController extends BaseController
                 Messages::successPasswordChanged();
                 $this->redirect("/" . Routes::$USER_LOGIN);
                 exit(0);
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    private function postSettings()
+    {
+        $ensure = $this->ensure(["email", "username"]);
+        if (count($ensure) != 0) Messages::shouldEnsure($ensure);
+        else {
+            $us = new UserSettings($_POST);
+            if ($us->validate()) {
+                $user = new User();
+                $u = json_decode($_SESSION["user"]);
+                $user = $user->load($u->id);
+                /** @var User $user */
+                $user->load($u->id);
+                $user->email = $us->email;
+                $user->username = $us->username;
+                if ($us->changePassword())
+                    $user->password = $user->setPassword($us->password);
+                $user->notified = $us->notify;
+                if ($us->changePassword())
+                    $user->updateWithPassword();
+                else
+                    $user->update();
+                $user->login();
             }
         }
     }

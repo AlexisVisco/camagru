@@ -18,18 +18,18 @@
                 </div>
                 <div class="field">
                     <div class="control">
-                        <input name="passwordConfirm" class="input" type="password" placeholder="Ancien mot de passe">
+                        <input name="password" class="input" type="password" placeholder="Ancien mot de passe">
                     </div>
                 </div>
                 <div class="field">
                     <div class="control">
-                        <input name="passwordConfirm" class="input" type="password" placeholder="Nouveau mot de passe">
+                        <input name="passwordNew" class="input" type="password" placeholder="Nouveau mot de passe">
                     </div>
                 </div>
                 <div class="field">
                     <div class="control">
                         <label class="checkbox">
-                            <input type="checkbox" value="<?php echo $user->notified ? 'checked' : '' ?>">
+                            <input type="checkbox" name="notify" value="<?php echo $user->notified ? 'checked' : '' ?>">
                             Recevoir les notifications par email
                         </label>
                     </div>

@@ -37,7 +37,7 @@ $router
     ->addRoute(Routes::$USER_LOGOUT,                "UserController@logout",                  RouteOrder::$ROUTE)
     ->addRoute(Routes::$USER_FORGOT_PWD,            "UserController@forgotPwd",               RouteOrder::$ROUTE)
     ->addRoute(Routes::$USER_CHANGE_PWD,            "UserController@changePwd",               RouteOrder::$ROUTE)
-    ->addRoute(Routes::$USER_SETTINGS,              "UserController@settings",               RouteOrder::$ROUTE)
+    ->addRoute(Routes::$USER_SETTINGS,              "UserController@settings",                RouteOrder::$ROUTE)
 
     // PICTURE ROUTES
     //

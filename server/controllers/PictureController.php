@@ -66,10 +66,9 @@ class PictureController extends BaseController
                     Messages::pictureUploadSuccess();
                     $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
                 } catch (Exception $e) {
-                    var_dump($e->getMessage());
-                    //$fm = new FlashMessage("Impossible de faire le traitement.", FlashType::$ERROR);
-                    //$fm->register();
-                    //$this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
+                    $fm = new FlashMessage("Impossible de faire le traitement.", FlashType::$ERROR);
+                    $fm->register();
+                    $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
                 }
             } else {
                 try {
@@ -83,10 +82,9 @@ class PictureController extends BaseController
                     Messages::pictureUploadSuccess();
                     $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
                 } catch (Exception $e) {
-                    var_dump($e->getMessage());
-                    //$fm = new FlashMessage("Impossible de faire le traitement.", FlashType::$ERROR);
-                    //$fm->register();
-                    //$this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
+                    $fm = new FlashMessage("Impossible de faire le traitement.", FlashType::$ERROR);
+                    $fm->register();
+                    $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
                 }
             }
         }
