@@ -54,14 +54,14 @@ class PictureController extends BaseController
                     if (false === $face->readImageBlob($decodedRaw)) throw new Exception("can't read webcam image");
 
                     if (false === $face->compositeImage($alpha, Imagick::COMPOSITE_DEFAULT,
-                            ($face->getImageWidth()/2) - ($alpha->getImageWidth()/2) + ($compositionOpt["desc"]["dw"]),
-                            ($face->getImageHeight()/2) - ($alpha->getImageHeight()/2) + ($compositionOpt["desc"]["dh"])
-                    ))
+                            ($face->getImageWidth() / 2) - ($alpha->getImageWidth() / 2) + ($compositionOpt["desc"]["dw"]),
+                            ($face->getImageHeight() / 2) - ($alpha->getImageHeight() / 2) + ($compositionOpt["desc"]["dh"])
+                        ))
                         throw new Exception("can't merge two images");
 
                     $user = json_decode($_SESSION["user"]);
                     $pic = new Picture();
-                    $pic->init($user->id, 'data:image/jpg;base64,'.base64_encode($face->getImageBlob()));
+                    $pic->init($user->id, 'data:image/jpg;base64,' . base64_encode($face->getImageBlob()));
                     $pic->save();
                     Messages::pictureUploadSuccess();
                     $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
@@ -77,7 +77,7 @@ class PictureController extends BaseController
 
                     $user = json_decode($_SESSION["user"]);
                     $pic = new Picture();
-                    $pic->init($user->id, 'data:image/jpg;base64,'.base64_encode($face->getImageBlob()));
+                    $pic->init($user->id, 'data:image/jpg;base64,' . base64_encode($face->getImageBlob()));
                     $pic->save();
                     Messages::pictureUploadSuccess();
                     $this->redirect("/" . Routes::$PICTURE_ADD_PHOTO);
@@ -153,7 +153,7 @@ class PictureController extends BaseController
             $picture->user = $user->load($picture->id_user);
         }
         $amount = Picture::countPictures();
-        echo self::render("gallery", ["pictures" => $pictures, "page" => $page, "maxPage" => $amount/9]);
+        echo self::render("gallery", ["pictures" => $pictures, "page" => $page, "maxPage" => $amount / 9]);
     }
 
     function myPictures()
@@ -171,10 +171,11 @@ class PictureController extends BaseController
             $picture->user = $user;
         }
         $amount = Picture::countPicturesWhere($user->id);
-        echo self::render("my-pictures", ["pictures" => $pictures, "page" => $page, "maxPage" => $amount/12]);
+        echo self::render("my-pictures", ["pictures" => $pictures, "page" => $page, "maxPage" => $amount / 12]);
     }
 
-    function delete($id) {
+    function delete($id)
+    {
         if (!isset($_SESSION["user"])) $this->redirect("/" . Routes::$USER_LOGIN, true);
         $user = json_decode($_SESSION["user"]);
         $pic = new Picture();
@@ -230,11 +231,12 @@ class PictureController extends BaseController
         $comment = new Comment();
         $comment->init($pictureId, $user->id, $_POST["body"]);
         $comment->save();
+
+        $u = new User();
+        $u = $u->load($picture->id_user);
         Messages::pictureCommentSuccess();
-        if ($user->notified == 1 && $user->id != $picture->id_user) {
-            $u = new User();
-            $u = $u->load($picture->id_user);
-            if ($u != null) {
+        if ($u != null) {
+            if ($u->notified == 1 && $user->id != $picture->id_user) {
                 Mails::pictureNewComment($pictureId, $comment->body, $user->username, $u->email);
             }
         }
