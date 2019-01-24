@@ -141,10 +141,11 @@ class UserController extends BaseController
         else {
             $ucp = new UserChangePassword($id, $token, $_POST);
             if ($ucp->validate()) {
+                /** @var User $user */
                 $user = new User();
                 $user = $user->load($id);
                 $user->setPassword($ucp->password);
-                $user->update();
+                $user->updateWithPassword();
 
                 $tok = new Token();
                 $tok->loadWhereWithType("token", $token, Token::$TYPE_FORGOT_PWD)->delete();
