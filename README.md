@@ -8,15 +8,15 @@ __User__
 - [x] Confirmation du compte via email
 - [x] Connexion: Email, Mot de Passe
 - [x] Deconnexion en un seul click
-- [ ] Modifier son nom d'utilisateur, email, mot de passe
+- [x] Modifier son nom d'utilisateur, email, mot de passe
 
 __Gallery__
 
 - [x] Doit etre publique
 - [X] Afficher (avec pagination) l'integralité des publications (par date de création)
 - [x] Doit pouvoir etre commenté/liké par les utilisateurs connectés
-- [ ] Email lorqu'un utilisateur commente une image (email vers l'auteur)
-- [ ] ^ Réglable en paramètre
+- [x] Email lorqu'un utilisateur commente une image (email vers l'auteur)
+- [x] ^ Réglable en paramètre
 
  __Montage__
  
