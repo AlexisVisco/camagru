@@ -1,7 +1,3 @@
-FROM keopx/apache-php:7.0
-
-RUN a2enmod rewrite
-
 FROM php:apache
 
 ADD server/php.ini /usr/local/etc/php/php.ini
@@ -10,6 +6,7 @@ RUN chmod +x /usr/local/bin/mhsendmail
 
 RUN apt-get update && apt-get install -y libmagickwand-dev --no-install-recommends
 
-RUN a2enmod rewrite
+RUN pecl install imagick &&  docker-php-ext-enable imagick
 
 RUN docker-php-ext-install pdo_mysql
+RUN a2enmod rewrite

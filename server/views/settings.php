@@ -28,8 +28,13 @@
                 </div>
                 <div class="field">
                     <div class="control">
+                        <input name="passwordNewConfirm" class="input" type="password" placeholder="Confirmation nouveau mot de passe">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
                         <label class="checkbox">
-                            <input type="checkbox" name="notify" value="<?php echo $user->notified ? 'checked' : '' ?>">
+                            <input type="checkbox" name="notify" <?php echo $user->notified == 1 ? 'checked' : '' ?>>
                             Recevoir les notifications par email
                         </label>
                     </div>

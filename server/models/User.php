@@ -76,9 +76,9 @@ class User extends Storage
         return $this->database->q(
         /** @lang MySQL */
             "UPDATE user
-            SET username=?, email=?, confirmed=?, notified=? password=?
-            WHERE id='$this->id'",
-            [$this->username, $this->email, $this->confirmed, $this->notified, $this->password]
+            SET username=?, email=?, confirmed=?, notified=?, password=?
+            WHERE id=?",
+            [$this->username, $this->email, $this->confirmed, $this->notified, $this->password, $this->id]
         )->errorCode();
     }
 

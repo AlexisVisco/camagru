@@ -3,6 +3,7 @@
 class Routes {
 
     public static $HOME = "";
+    public static $SETUP = "setup/";
 
     public static $USER_CONFIRM = "confirmation/(.+)/(.+)/";
     public static $USER_REGISTER = "inscription/";

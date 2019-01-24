@@ -32,7 +32,7 @@ CREATE TABLE `picture` (
 );
 
 CREATE TABLE `like` (
-  `id_picture` VARCHAR(255) PRIMARY KEY,
+  `id_picture` VARCHAR(255),
   `id_user` VARCHAR(255),
   `date` DATETIME DEFAULT CURRENT_TIMESTAMP
 );

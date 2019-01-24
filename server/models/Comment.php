@@ -90,7 +90,7 @@ class Comment extends Storage
         $d = new Database();
         $d->q(
         /** @lang MySQL */
-            "DELETE FROM comment WHERE id = ?",
+            "DELETE FROM comment WHERE id_picture = ?",
             [$id]
         );
     }

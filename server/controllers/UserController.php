@@ -6,24 +6,28 @@ class UserController extends BaseController
 
     public function register()
     {
+        if (isset($_SESSION["user"])) $this->redirect("/");
         if (count($_POST) != 0) $this->postRegister();
         echo self::render("register", ["fullheight" => "is-fullheight"]);
     }
 
     public function forgotPwd()
     {
+        if (isset($_SESSION["user"])) $this->redirect("/");
         if (count($_POST) != 0) $this->postForgotPwd();
         echo self::render("forgot_password", ["fullheight" => "is-fullheight"]);
     }
 
     public function changePwd($id, $token)
     {
+        if (isset($_SESSION["user"])) $this->redirect("/");
         if (count($_POST) != 0) $this->postChangePwd($id, $token);
         echo self::render("change_password", ["fullheight" => "is-fullheight"]);
     }
 
     public function login()
     {
+        if (isset($_SESSION["user"])) $this->redirect("/");
         if (count($_POST) != 0) $this->postLogin();
         echo self::render("login", ["fullheight" => "is-fullheight"]);
     }
@@ -41,28 +45,31 @@ class UserController extends BaseController
     }
 
 
-
     public function confirm($id, $token)
     {
-        $user = new User();
-        $user = $user->load($id);
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $user = new User();
+            $user = $user->load($id);
 
-        $tok = new Token();
-        $tok = $tok->loadWhereWithType("token", $token, Token::$TYPE_CONFIRM);
+            $tok = new Token();
+            $tok = $tok->loadWhereWithType("token", $token, Token::$TYPE_CONFIRM);
 
-        if (($user == NULL || $tok == NULL) || $tok->id != $user->id) {
+            if (($user == NULL || $tok == NULL) || $tok->id != $user->id) {
+                $this->redirect("/");
+                return;
+            }
+            if ($user->confirmed == 0) {
+                $user->confirmed = 1;
+                $tok->delete();
+                Messages::successAccountConfirmed();
+                $user->update();
+                $this->redirect("/" . Routes::$USER_LOGIN);
+                return;
+            }
             $this->redirect("/");
-            return;
+        } else {
+            echo self::render("verif_account", ["fullheight" => "is-fullheight", "id" => $id, "token" => $token]);
         }
-        if ($user->confirmed == 0) {
-            $user->confirmed = 1;
-            $tok->delete();
-            Messages::successAccountConfirmed();
-            $user->update();
-            $this->redirect("/" . Routes::$USER_LOGIN);
-            return;
-        }
-        $this->redirect("/");
     }
 
     private function postRegister()
@@ -149,31 +156,32 @@ class UserController extends BaseController
         }
     }
 
-    /**
-     *
-     */
     private function postSettings()
     {
         $ensure = $this->ensure(["email", "username"]);
         if (count($ensure) != 0) Messages::shouldEnsure($ensure);
         else {
             $us = new UserSettings($_POST);
-            if ($us->validate()) {
+            if ($us->validate() && count($us->getChanged()) > 0) {
                 $user = new User();
                 $u = json_decode($_SESSION["user"]);
                 $user = $user->load($u->id);
                 /** @var User $user */
                 $user->load($u->id);
+                $oldmail = $user->email;
                 $user->email = $us->email;
                 $user->username = $us->username;
-                if ($us->changePassword())
-                    $user->password = $user->setPassword($us->password);
                 $user->notified = $us->notify;
-                if ($us->changePassword())
+                if ($us->changePassword()) {
+                    $user->setPassword($us->passwordNew);
                     $user->updateWithPassword();
-                else
+                } else
                     $user->update();
                 $user->login();
+                if (in_array(UserSettings::$CHANGED_EMAIL, $us->getChanged())) {
+                    Mails::userChangeMail($oldmail, $user->email);
+                }
+                Messages::settingsChanged($us->getChanged());
             }
         }
     }

@@ -141,4 +141,43 @@ class Messages
         $fm = new FlashMessage("La photo a été supprimé !", FlashType::$SUCCESS);
         $fm->register();
     }
+
+    public static function settingsPwdMissingNew()
+    {
+        $fm = new FlashMessage("Le nouveau mot de passe est requis pour le changer.", FlashType::$ERROR);
+        $fm->register();
+    }
+
+    public static function settingsPwdMissingOld()
+    {
+        $fm = new FlashMessage("Le mot de passe actuel est requis pour le changer.", FlashType::$ERROR);
+        $fm->register();
+    }
+
+    public static function settingsPwdOldBad()
+    {
+        $fm = new FlashMessage("Votre mot de passe actuel est erroné.", FlashType::$ERROR);
+        $fm->register();
+    }
+
+    public static function settingsChanged($changed)
+    {
+        $msg = "Ces préférences ont été changés:<br>";
+        foreach ($changed as $change) {
+            if ($change == UserSettings::$CHANGED_USERNAME) {
+                $msg .= "- Votre nom d'utilisateur<br>";
+            }
+            if ($change == UserSettings::$CHANGED_EMAIL) {
+                $msg .= "- Votre adresse email<br>";
+            }
+            if ($change == UserSettings::$CHANGED_NOTIFY) {
+                $msg .= "- Vos préférence de notifications<br>";
+            }
+            if ($change == UserSettings::$CHANGED_PASSWORD) {
+                $msg .= "- Votre mot de passe<br>";
+            }
+        }
+        $fm = new FlashMessage($msg, FlashType::$SUCCESS);
+        $fm->register();
+    }
 }

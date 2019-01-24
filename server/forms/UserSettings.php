@@ -7,9 +7,16 @@ class UserSettings implements FormValidation
     public $username;
     public $password;
     public $passwordNew;
+    public $passwordNewConfirm;
     public $notify;
 
     public $user;
+    public $changed = [];
+
+    public static $CHANGED_USERNAME = "username";
+    public static $CHANGED_EMAIL = "email";
+    public static $CHANGED_NOTIFY = "notify";
+    public static $CHANGED_PASSWORD = "password";
 
     /**
      * UserRegister constructor.
@@ -18,57 +25,65 @@ class UserSettings implements FormValidation
     public function __construct($array)
     {
         $this->user = json_decode($_SESSION["user"]);
-        $this->notify = 0;
         foreach ($array as $key => $item) {
             $this->{$key} = $item;
         }
-        if ($this->notify == "checked") {
+        if ($this->notify == "on") {
+            if ($this->user->notified != 1) array_push($this->changed, "notify");
             $this->notify = 1;
+        }
+        if ($this->notify == "") {
+            if ($this->user->notified != 0) array_push($this->changed, "notify");
+            $this->notify = 0;
         }
     }
 
     public function email(): bool
     {
         if ($this->user->email == $this->email) return true;
+        array_push($this->changed, "email");
         return Validations::validateUserEmail(new User(), $this->email, false);
     }
 
     public function username(): bool
     {
         if ($this->user->username == $this->username) return true;
+        array_push($this->changed, "username");
         return Validations::validateUserUsername(new User(), $this->username, false);
     }
 
     public function password()
     {
-        if ($this->password != "" && $this->password != "") {
-            if ($this->passwordNew == $this->password) {
-                $m = new FlashMessage("Mot de passe invalide.", FlashType::$ERROR);
-                $m->register();
+        if ($this->password != "" && $this->passwordNew != "") {
+            if (password_verify(SALT . $this->password, $this->user->password)) {
+                array_push($this->changed, "password");
+                if (!Validations::isGoodPassword($this->passwordNew)) {
+                    return false;
+                }
+                return Validations::validateUserPassword($this->passwordNew, $this->passwordNewConfirm);
+            } else {
+                Messages::settingsPwdOldBad();
                 return false;
             }
-            if (password_verify(SALT . $this->password, $this->user->password)) {
-                if (Validations::isGoodPassword($this->passwordNew)) {
-                    return true;
-                }
-            } else {
-                $m = new FlashMessage("Mot de passe invalide.", FlashType::$ERROR);
-                $m->register();
-            }
-        }
-        if ($this->password == "" && $this->password == "")  {
-            return true;
+        } else if ($this->password != "" && $this->passwordNew == "") {
+            Messages::settingsPwdMissingNew();
+            return false;
+        } else if ($this->password == "" && $this->passwordNew != "") {
+            Messages::settingsPwdMissingOld();
+            return false;
         } else {
-            $m = new FlashMessage("Mot de passe invalide.", FlashType::$ERROR);
-            $m->register();
+            return true;
         }
-        return false;
     }
-
 
     public function changePassword(): bool
     {
         return $this->password != "" && $this->password != "";
+    }
+
+    public function getChanged(): array
+    {
+        return $this->changed;
     }
 
     function validate(): bool
@@ -85,4 +100,5 @@ class UserSettings implements FormValidation
 
         return true;
     }
+
 }

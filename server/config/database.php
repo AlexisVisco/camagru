@@ -7,9 +7,6 @@ class Database extends PDO
     private $DB_PASSWORD = "test";
     private $DB_DEBUG = true;
 
-    /**
-     * Database constructor.
-     */
     public function __construct()
     {
         parent::__construct($this->DB_DSN, $this->DB_USER, $this->DB_PASSWORD);
@@ -45,7 +42,6 @@ class Database extends PDO
         return $res;
     }
 
-
     public function lst($query, $arguments = []) {
         $statement = self::prepare($query);
         $statement->execute($arguments);
@@ -54,5 +50,13 @@ class Database extends PDO
             return NULL;
         }
         return $res;
+    }
+
+    function isInited() {
+        $st = self::prepare("
+          SELECT TABLE_NAME
+          FROM information_schema.TABLES 
+          WHERE TABLE_SCHEMA = camagru");
+        return $st->fetchObject();
     }
 }

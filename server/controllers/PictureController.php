@@ -215,10 +215,12 @@ class PictureController extends BaseController
     {
         if (count($_POST) == 0 || !isset($_SESSION["user"])) $this->redirect("/photo/" . $pictureId . "/");
         $picture = new Picture();
+        /** @var Picture $picture */
         $picture = $picture->loadWhere("id", $pictureId);
         if ($picture == null) {
             $this->redirect("/photo/" . $pictureId . "/");
         }
+        /** @var User $user */
         $user = json_decode($_SESSION["user"]);
         $ensure = self::ensure(["body"]);
         if (count($ensure) != 0) Messages::shouldEnsure($ensure);
@@ -229,6 +231,13 @@ class PictureController extends BaseController
         $comment->init($pictureId, $user->id, $_POST["body"]);
         $comment->save();
         Messages::pictureCommentSuccess();
+        if ($user->notified == 1 && $user->id != $picture->id_user) {
+            $u = new User();
+            $u = $u->load($picture->id_user);
+            if ($u != null) {
+                Mails::pictureNewComment($pictureId, $comment->body, $user->username, $u->email);
+            }
+        }
         $this->redirect("/photo/" . $pictureId . "/");
     }
 
