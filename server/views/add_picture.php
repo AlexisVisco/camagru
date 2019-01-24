@@ -15,7 +15,7 @@ $_SIZE_CAM = 320 * 2;
                     <div class="columns">
                         <div class="column">
                             <canvas id="canvas_preview" style="position: absolute; z-index: 1" height="500"></canvas>
-                            <video  style="z-index: 0" id="video"></video>
+                            <video style="z-index: 0" id="video"></video>
                         </div>
                         <div class="column"
                              id="show" <?php if (!isset($fileb64)) { ?> style="display: None" <?php } ?>>

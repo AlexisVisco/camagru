@@ -25,18 +25,18 @@ var streaming = false,
     raw_image = document.querySelector('#raw_image'),
     preview_img = '/public/img/thug_glasses.png',
     width = 500, height = 0,
-    canvas_preview = document.querySelector('#canvas_preview');
+    canvasPreview = document.querySelector('#canvas_preview');
 
 function setPreview() {
     var img = new Image();
     img.height = desc[preview_img].h;
     img.width = desc[preview_img].w;
     img.onload = function () {
-        canvas_preview.setAttribute('width', width);
-        canvas_preview.setAttribute('height', height);
-        canvas_preview.getContext('2d').clearRect(0, 0, canvas_preview.width, canvas_preview.height);
+        canvasPreview.setAttribute('width', width);
+        canvasPreview.setAttribute('height', height);
+        canvasPreview.getContext('2d').clearRect(0, 0, canvasPreview.width, canvasPreview.height);
         console.log(width, height, width / 2 + (desc[preview_img].w / 2));
-        canvas_preview.getContext('2d').drawImage(
+        canvasPreview.getContext('2d').drawImage(
             img,
             width / 2 - (desc[preview_img].w / 2) + (desc[preview_img].dw),
             height / 2 - (desc[preview_img].h / 2) + (desc[preview_img].dh),
@@ -101,14 +101,17 @@ navigator.getMedia(
     },
     function (err) {
         console.log("An error occured! " + err);
+        startbutton.style.display = 'none';
+        video.style.display = 'none';
+        canvasPreview.style.display = 'none';
     }
 );
 
 video.addEventListener('canplay', function () {
     if (!streaming) {
         height = video.videoHeight / (video.videoWidth / width);
-        canvas_preview.height = height;
-        canvas_preview.width = width;
+        canvasPreview.height = height;
+        canvasPreview.width = width;
         video.setAttribute('width', width);
         video.setAttribute('height', height);
 
