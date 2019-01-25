@@ -1,7 +1,7 @@
 <?php
 
-// Le fichier db.sql est directement executé lors du docker compose.
-// de ce fait il n'y a pas besoin de setup le site.
+// Le fichier db.sql est directement injecté lors du premier docker compose.
+// De ce fait il n'y a pas besoin de setup le site.
 
 /**
 db:
