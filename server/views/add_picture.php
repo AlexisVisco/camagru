@@ -1,7 +1,3 @@
-<?php
-$_SIZE_CAM = 320 * 2;
-?>
-
 <div class="container has-text-centered">
     <div class="column" style="padding-bottom: 20px">
         <section class="column is-three-quarters">
@@ -20,7 +16,9 @@ $_SIZE_CAM = 320 * 2;
                         <div class="column"
                              id="show" <?php if (!isset($fileb64)) { ?> style="display: None" <?php } ?>>
 
-                            <img id="photo" src="<?php if (isset($fileb64)) { echo  $fileb64; } ?>" alt="Your"
+                            <img id="photo" src="<?php if (isset($fileb64)) {
+                                echo $fileb64;
+                            } ?>" alt="Your"
                                  width="500"
                                  height="350">
                         </div>
@@ -68,7 +66,8 @@ $_SIZE_CAM = 320 * 2;
                     <div class="box">
                         <input type="image" name="submit_thug_glasses"
                                value="thug_glasses" alt="thug_glasses"
-                               src="/public/img/thug_glasses.png" height="150" onclick="preview(event, '/public/img/thug_glasses.png')">
+                               src="/public/img/thug_glasses.png" height="150"
+                               onclick="preview(event, '/public/img/thug_glasses.png')">
                     </div>
                 </div>
                 <div class="column is-one-quarter">
@@ -98,11 +97,22 @@ $_SIZE_CAM = 320 * 2;
                 <input id="raw_image" type="hidden" name="raw">
                 <input id="composition" type="hidden" name="has_composition" value="true">
                 <input id="composition_img" type="hidden" name="composition_img" value="/public/img/thug_glasses.png">
-                <button class="button is-success" style="margin: 12px" onclick="validFormWithoutComposition(event)">Valider sans la composition</button>
-                <button class="button is-info" style="margin: 12px" onclick="validFormWithComposition(event)">Valider avec la composition</button>
+                <button class="button is-success" style="margin: 12px" onclick="validFormWithoutComposition(event)">
+                    Valider sans la composition
+                </button>
+                <button class="button is-info" style="margin: 12px" onclick="validFormWithComposition(event)">Valider
+                    avec la composition
+                </button>
             </div>
         </div>
     </form>
+</section>
+
+<section class="section hero has-text-centered is-bold"
+         style="padding: 1.5rem 1.5rem !important; padding-right: 0 !important;">
+    <h1 class="is-size-3" style="padding-bottom: 10px">Historique</h1>
+    <div id="list_history" class="row columns is-multiline">
+    </div>
 </section>
 
 <script src="/public/js/camera.js"></script>

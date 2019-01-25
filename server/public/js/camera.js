@@ -23,6 +23,7 @@ var streaming = false,
     startbutton = document.querySelector('#startbutton'),
     photo_input = document.querySelector('#photo_input'),
     raw_image = document.querySelector('#raw_image'),
+    lhistory = document.querySelector('#list_history'),
     preview_img = '/public/img/thug_glasses.png',
     width = 500, height = 0,
     canvasPreview = document.querySelector('#canvas_preview');
@@ -137,6 +138,17 @@ function take() {
     //console.log(data);
     photo.style.display = "visible";
     photo.setAttribute('src', data);
+    console.log(lhistory);
+    lhistory.insertAdjacentHTML("afterbegin",
+        `<div class="column is-one-fifth">
+            <div class="card large round">
+                <div class="card-image ">
+                    <figure class="image">
+                        <img width="100px" src="${data}">
+                    </figure>
+                </div>
+            </div>
+        </div>`);
     photo_input.setAttribute('value', data);
     raw_image.setAttribute('value', data);
 }

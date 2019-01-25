@@ -28,7 +28,6 @@
                                     <p style="font-weight: bolder; display: inline; padding-right: 2px"><?php echo $picture->comments ?></p>
                                     <i style="" class="far fa-comment"></i>
                                 </div>
-
                             </div>
                         </div>
                     </div>
