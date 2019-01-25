@@ -4,8 +4,6 @@ require_once './config/database.php';
 require_once './config/Routes.php';
 require_once './config/Mails.php';
 require_once './config/configuration.php';
-require_once './config/setup.php';
-
 require_once './controllers/Autoloader.php';
 require_once './models/Autoloader.php';
 require_once './util/Autoloader.php';
