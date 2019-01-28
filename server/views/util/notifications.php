@@ -10,7 +10,7 @@ if (FlashMessage::hasFlash()) {
     }
     ?>
     <div style="text-align: left" class="notification <?php printSafety($type) ?>">
-        <?php printSafety($msg->message) ?>
+        <?php $msg->message ?>
     </div>
     <?php
 }
