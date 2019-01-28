@@ -17,6 +17,13 @@ var desc = {
     },
 };
 
+var dic = {
+    "/public/img/thug_glasses.png": "thug_glasses",
+    "/public/img/glasses.png": "glasses",
+    "/public/img/horror.png": "horror",
+    "/public/img/dog.png": "dog"
+}
+
 var streaming = false,
     video = document.querySelector('#video'),
     photo = document.querySelector('#photo'),
@@ -24,9 +31,12 @@ var streaming = false,
     photo_input = document.querySelector('#photo_input'),
     raw_image = document.querySelector('#raw_image'),
     lhistory = document.querySelector('#list_history'),
+    camPreview = document.querySelector('#cameraPreview'),
     preview_img = '/public/img/thug_glasses.png',
     width = 500, height = 0,
     canvasPreview = document.querySelector('#canvas_preview');
+
+document.querySelector('#' + dic[preview_img]).style["border"] = "2px solid green"
 
 function setPreview() {
     var img = new Image();
@@ -36,7 +46,6 @@ function setPreview() {
         canvasPreview.setAttribute('width', width);
         canvasPreview.setAttribute('height', height);
         canvasPreview.getContext('2d').clearRect(0, 0, canvasPreview.width, canvasPreview.height);
-        console.log(width, height, width / 2 + (desc[preview_img].w / 2));
         canvasPreview.getContext('2d').drawImage(
             img,
             width / 2 - (desc[preview_img].w / 2) + (desc[preview_img].dw),
@@ -49,6 +58,10 @@ function setPreview() {
 }
 
 function preview(event, img) {
+    let o = document.querySelector('#' + dic[preview_img]);
+    let n = document.querySelector('#' + dic[img]);
+    o.style["border"] = "none";
+    n.style["border"] = "2px solid green";
     event.preventDefault();
     event.stopPropagation();
     preview_img = img;
@@ -71,6 +84,7 @@ function validFormWithoutComposition(event) {
 function validFormWithComposition(event) {
     if (!raw_image.value.startsWith("data:image")) {
         event.preventDefault();
+        alert("Une photo doit être prise ou uploadé")
         return false
     }
     document.querySelector("#composition_img").value = JSON.stringify({
@@ -101,10 +115,10 @@ navigator.getMedia(
         video.play();
     },
     function (err) {
-        console.log("An error occured! " + err);
         startbutton.style.display = 'none';
         video.style.display = 'none';
         canvasPreview.style.display = 'none';
+        camPreview.style.display = 'none';
     }
 );
 
@@ -135,10 +149,8 @@ function take() {
     document.getElementById("save").style.display = 'block';
     document.getElementById("montage").style.display = 'block';
 
-    //console.log(data);
     photo.style.display = "visible";
     photo.setAttribute('src', data);
-    console.log(lhistory);
     lhistory.insertAdjacentHTML("afterbegin",
         `<div class="column is-one-fifth">
             <div class="card large round">

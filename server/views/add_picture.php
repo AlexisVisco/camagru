@@ -9,15 +9,14 @@
             <div class="container">
                 <div class="box" id="webcam">
                     <div class="columns">
-                        <div class="column">
+                        <div class="column" id="cameraPreview">
                             <canvas id="canvas_preview" style="position: absolute; z-index: 1" height="500"></canvas>
                             <video style="z-index: 0" id="video"></video>
                         </div>
-                        <div class="column"
-                             id="show" <?php if (!isset($fileb64)) { ?> style="display: None" <?php } ?>>
+                        <div class="column" id="show" <?php if (!isset($fileb64)) { ?> style="display: None" <?php } ?>>
 
                             <img id="photo" src="<?php if (isset($fileb64)) {
-                                echo $fileb64;
+                                printSafety($fileb64);
                             } ?>" alt="Your"
                                  width="500"
                                  height="350">
@@ -63,7 +62,7 @@
         <div id="montage" class="container">
             <div class="columns is-multiline">
                 <div class="column is-one-quarter">
-                    <div class="box">
+                    <div class="box" id="thug_glasses">
                         <input type="image" name="submit_thug_glasses"
                                value="thug_glasses" alt="thug_glasses"
                                src="/public/img/thug_glasses.png" height="150"
@@ -71,7 +70,7 @@
                     </div>
                 </div>
                 <div class="column is-one-quarter">
-                    <div class="box">
+                    <div class="box" id="dog">
                         <input type="image" name="submit_dog"
                                value="dog" alt="dog"
                                src="/public/img/dog.png"
@@ -79,7 +78,7 @@
                     </div>
                 </div>
                 <div class="column is-one-quarter">
-                    <div class="box">
+                    <div class="box" id="glasses">
                         <input type="image" name="submit_glasses" value="glasses"
                                alt="glasses"
                                src="/public/img/glasses.png"
@@ -87,7 +86,7 @@
                     </div>
                 </div>
                 <div class="column is-one-quarter">
-                    <div class="box">
+                    <div class="box" id="horror">
                         <input type="image" name="submit_horror" value="horror"
                                alt="horror"
                                src="/public/img/horror.png"

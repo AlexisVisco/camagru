@@ -22,6 +22,10 @@ Camagru\Forms\Autoloader::register();
 
 $router = Router::getInstance();
 
+function printSafety($str) {
+    echo htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+}
+
 $router
 
     // HOME ROUTE

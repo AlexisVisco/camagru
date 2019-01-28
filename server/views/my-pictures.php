@@ -12,9 +12,9 @@
             foreach ($pictures as $picture) { ?>
                 <div class="column is-one-third">
                     <div class="card large round">
-                        <div onclick="picture('<?php echo $picture->id ?>')" class="card-image ">
+                        <div onclick="picture('<?php printSafety($picture->id) ?>')" class="card-image ">
                             <figure style="cursor: pointer" class="image">
-                                <img src="<?php echo $picture->data ?>">
+                                <img src="<?php printSafety($picture->data) ?>">
                             </figure>
                         </div>
                     </div>
@@ -22,14 +22,14 @@
                         <div class="media-content">
                             <div style="display: flex">
                                 <p style="display: inline; align-self: flex-start"><span class="title is-6"><a
-                                            style="cursor: text">@<?php echo $picture->user->username ?></a></span>
+                                            style="cursor: text">@<?php printSafety($picture->user->username) ?></a></span>
                                 </p>
                                 <div style="margin-left: auto">
-                                    <p style="font-weight: bolder; display: inline; padding-right: 2px"><?php echo $picture->likes ?></p>
+                                    <p style="font-weight: bolder; display: inline; padding-right: 2px"><?php printSafety($picture->likes) ?></p>
                                     <i style="padding-right: 30px; cursor: pointer;" class="far fa-heart"></i>
-                                    <p style="font-weight: bolder; display: inline; padding-right: 2px"><?php echo $picture->comments ?></p>
+                                    <p style="font-weight: bolder; display: inline; padding-right: 2px"><?php printSafety($picture->comments) ?></p>
                                     <i style="padding-right: 30px;" class="far fa-comment"></i>
-                                    <i style="cursor: pointer; color: red" class="far fa-trash-alt" onclick="deletePicture('<?php echo $picture->id ?>')"></i>
+                                    <i style="cursor: pointer; color: red" class="far fa-trash-alt" onclick="deletePicture('<?php printSafety($picture->id) ?>')"></i>
                                 </div>
 
                             </div>
@@ -43,13 +43,13 @@
             <?php if ($page - 1 < 0) { ?>
                 <a class="pagination-next" disabled>Page précédente</a>
             <?php } else  {?>
-                <a href="/<?php echo Routes::$PICTURE_MY_PICTURES ?>?page=<?php echo $page - 1?>" class="pagination-next">Page précédente</a>
+                <a href="/<?php echo Routes::$PICTURE_MY_PICTURES ?>?page=<?php printSafety($page - 1)?>" class="pagination-next">Page précédente</a>
             <?php }
 
             if ($page + 1 > $maxPage) { ?>
                 <a class="pagination-next" disabled>Page suivante</a>
             <?php } else  {?>
-                <a href="/<?php echo Routes::$PICTURE_MY_PICTURES ?>?page=<?php echo $page + 1?>" class="pagination-next">Page suivante</a>
+                <a href="/<?php echo Routes::$PICTURE_MY_PICTURES ?>?page=<?php printSafety($page + 1)?>" class="pagination-next">Page suivante</a>
             <?php } ?>
         </div>
     </div>

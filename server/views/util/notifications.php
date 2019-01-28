@@ -9,8 +9,8 @@ if (FlashMessage::hasFlash()) {
         $type = "is-warning";
     }
     ?>
-    <div style="text-align: left" class="notification <?php echo $type ?>">
-        <?php echo $msg->message ?>
+    <div style="text-align: left" class="notification <?php printSafety($type) ?>">
+        <?php printSafety($msg->message) ?>
     </div>
     <?php
 }

@@ -8,12 +8,12 @@
             <form method="post" action="/<?php echo Routes::$USER_SETTINGS ?>">
                 <div class="field">
                     <p class="control">
-                        <input name="email" class="input" type="email" placeholder="Email" value="<?php echo $user->email ?>">
+                        <input name="email" class="input" type="email" placeholder="Email" value="<?php printSafety($user->email) ?>">
                     </p>
                 </div>
                 <div class="field">
                     <p class="control">
-                        <input name="username" class="input" type="text" placeholder="Username" value="<?php echo $user->username ?>">
+                        <input name="username" class="input" type="text" placeholder="Username" value="<?php printSafety($user->username) ?>">
                     </p>
                 </div>
                 <div class="field">
